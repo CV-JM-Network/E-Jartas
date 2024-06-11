@@ -1,8 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">E-jartas</string>
-    <string name="try_again">Silahkan Coba Lagi</string>
     <string name="email">Email</string>
     <string name="password">Kata sandi</string>
     <string name="login_title">Login Akun</string>
-    <string name="login_button">Masuk</string>
 </resources>
