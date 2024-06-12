@@ -5,4 +5,7 @@
     <string name="password">Kata sandi</string>
     <string name="login_title">Login Akun</string>
     <string name="login_button">Masuk</string>
+    <string name="email_cant_empty">Email tidak boleh kosong</string>
+    <string name="email_format_error">Format email salah</string>
+    <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
 </resources>

@@ -2,7 +2,12 @@ package com.jaylangkung.e_jartas.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Login(
+data class LoginRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String
+)
+
+data class LoginResponse(
     @SerializedName("data") val data: UserModel,
     @SerializedName("message") val message: String,
     @SerializedName("status") val status: String,
@@ -17,6 +22,7 @@ data class UserModel(
     @SerializedName("idlevel") val idlevel: Int,
     @SerializedName("img") val img: String,
     @SerializedName("judul") val judul: String,
+    @SerializedName("level") val level: String,
     @SerializedName("nama") val nama: String,
     @SerializedName("telp") val telp: String
 )
