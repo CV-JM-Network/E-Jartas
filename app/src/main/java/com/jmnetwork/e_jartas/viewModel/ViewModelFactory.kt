@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 class ViewModelFactory private constructor(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            LoginViewModel(application) as T
-        } else {
-            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+        return when {
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(application) as T
+            modelClass.isAssignableFrom(ScanQrViewModel::class.java) -> ScanQrViewModel(application) as T
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
 
