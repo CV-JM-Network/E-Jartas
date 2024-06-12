@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var splashScreen: SplashScreen
+    private var isChangingConfigurations = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
@@ -38,26 +39,39 @@ class LoginActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
         myPreferences = MySharedPreferences(this@LoginActivity)
 
-        splashScreen.setOnExitAnimationListener { splashScreenView ->
-            splashScreenView.view.alpha = 1f
-            splashScreenView.view.animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .setListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator) {}
-                    override fun onAnimationEnd(animation: Animator) {
-                        splashScreenView.remove()
-                        if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            finish()
-                        } else {
-                            binding.cardLogin.visibility = View.VISIBLE
-                        }
-                    }
+        if (savedInstanceState != null) {
+            isChangingConfigurations = savedInstanceState.getBoolean("isChangingConfigurations")
+        }
 
-                    override fun onAnimationCancel(animation: Animator) {}
-                    override fun onAnimationRepeat(animation: Animator) {}
-                })
+        if (!isChangingConfigurations) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                splashScreenView.view.alpha = 1f
+                splashScreenView.view.animate()
+                    .alpha(1f)
+                    .setDuration(500L)
+                    .setListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator) {}
+                        override fun onAnimationEnd(animation: Animator) {
+                            splashScreenView.remove()
+                            if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                finish()
+                            } else {
+                                binding.cardLogin.visibility = View.VISIBLE
+                            }
+                        }
+
+                        override fun onAnimationCancel(animation: Animator) {}
+                        override fun onAnimationRepeat(animation: Animator) {}
+                    })
+            }
+        } else {
+            if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            } else {
+                binding.cardLogin.visibility = View.VISIBLE
+            }
         }
 
         viewModel.startActivityEvent.observe(this) {
@@ -105,5 +119,10 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isChangingConfigurations", true)
     }
 }
