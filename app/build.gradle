@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.jaylangkung.e_jartas'
+    namespace 'com.jmnetwork.e_jartas'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.jaylangkung.e_jartas"
+        applicationId "com.jmnetwork.e_jartas"
         minSdk 24
         targetSdk 34
         versionCode 1
@@ -70,6 +70,11 @@ dependencies {
     ksp 'androidx.room:room-compiler:2.6.0'
     implementation 'androidx.room:room-ktx:2.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // Datastore
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+    implementation "androidx.datastore:datastore-preferences-core:1.1.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.1'
