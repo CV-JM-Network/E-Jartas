@@ -8,11 +8,13 @@
     tools:context=".view.LoginActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:backgroundTint="?attr/colorSecondaryContainer"
         android:elevation="4dp"
+        android:visibility="invisible"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

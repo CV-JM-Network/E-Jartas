@@ -2,13 +2,11 @@ package com.jaylangkung.e_jartas.viewModel
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Intent
 import android.provider.Settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jaylangkung.e_jartas.BuildConfig
-import com.jaylangkung.e_jartas.MainActivity
 import com.jaylangkung.e_jartas.model.LoginRequest
 import com.jaylangkung.e_jartas.model.LoginResponse
 import com.jaylangkung.e_jartas.retrofit.RetrofitClient

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -12,7 +13,6 @@ import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
-import com.jaylangkung.e_jartas.MainActivity
 import com.jaylangkung.e_jartas.R
 import com.jaylangkung.e_jartas.databinding.ActivityLoginBinding
 import com.jaylangkung.e_jartas.utils.Constants
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
         splashScreen.setOnExitAnimationListener { splashScreenView ->
             splashScreenView.view.alpha = 1f
             splashScreenView.view.animate()
-                .alpha(0f)
+                .alpha(1f)
                 .setDuration(500L)
                 .setListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {}
@@ -50,6 +50,8 @@ class LoginActivity : AppCompatActivity() {
                         if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
+                        } else {
+                            binding.cardLogin.visibility = View.VISIBLE
                         }
                     }
 
