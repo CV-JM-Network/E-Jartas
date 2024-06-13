@@ -56,13 +56,14 @@ class LoginViewModel(application: Application) : ViewModel() {
                     200 -> {
                         val data = response.body()!!.data
                         myPreferences.setValue(Constants.USER, Constants.LOGIN)
-                        myPreferences.setValue(Constants.USER_IDADMIN, data.idadmin.toString())
+                        myPreferences.setValueInteger(Constants.USER_IDADMIN, data.idadmin)
                         myPreferences.setValue(Constants.USER_EMAIL, data.email)
                         myPreferences.setValue(Constants.USER_NAMA, data.nama)
                         myPreferences.setValue(Constants.USER_ALAMAT, data.alamat)
                         myPreferences.setValue(Constants.USER_TELP, data.telp)
                         myPreferences.setValue(Constants.USER_FOTO, data.img)
-                        myPreferences.setValue(Constants.USER_IDLEVEL, data.idlevel.toString())
+                        myPreferences.setValue(Constants.USER_LEVEL, data.level)
+                        myPreferences.setValueInteger(Constants.USER_IDLEVEL, data.idlevel)
                         _startActivityEvent.value = Constants.LOGIN
                     }
 
@@ -75,14 +76,12 @@ class LoginViewModel(application: Application) : ViewModel() {
                     }
 
                     else -> {
-//                        ErrorHandler.parseError(response.errorBody())
                         _startActivityEvent.value = response.errorBody().toString()
                     }
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-//                ErrorHandler.parseError(t)
                 Toasty.error(appContext, "Login gagal", Toasty.LENGTH_SHORT).show()
                 _startActivityEvent.value = "failure"
             }

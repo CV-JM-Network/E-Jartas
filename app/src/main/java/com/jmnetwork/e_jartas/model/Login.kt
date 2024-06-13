@@ -21,7 +21,6 @@ data class UserModel(
     @SerializedName("idadmin") val idadmin: Int,
     @SerializedName("idlevel") val idlevel: Int,
     @SerializedName("img") val img: String,
-    @SerializedName("judul") val judul: String,
     @SerializedName("level") val level: String,
     @SerializedName("nama") val nama: String,
     @SerializedName("telp") val telp: String

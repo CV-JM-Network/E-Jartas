@@ -11,19 +11,15 @@
     <string name="bottom_nav_scan_qr">Scan QR Code</string>
     <string name="bottom_nav_settings">Pengaturan</string>
     <string name="bottom_nav_home">Beranda</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_photo">Ganti Foto</string>
+    <string name="name">Nama</string>
+    <string name="address">Alamat</string>
+    <string name="phone">Nomor HP</string>
+    <string name="btn_save">Update Profil</string>
+    <string name="logout">Logout</string>
+    <string name="app_ver">App Version %1$s</string>
+    <string name="confirm_logout">Anda Yakin Ingin Logout?</string>
+    <string name="no">Tidak</string>
+    <string name="yes">Ya</string>
 </resources>
