@@ -11,6 +11,7 @@ import com.jmnetwork.e_jartas.model.LoginRequest
 import com.jmnetwork.e_jartas.model.LoginResponse
 import com.jmnetwork.e_jartas.retrofit.RetrofitClient
 import com.jmnetwork.e_jartas.utils.Constants
+import com.jmnetwork.e_jartas.utils.CustomHandler
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -69,14 +70,17 @@ class LoginViewModel(application: Application) : ViewModel() {
 
                     401 -> {
                         _startActivityEvent.value = "Email atau kata sandi salah"
+                        CustomHandler().responseHandler(appContext, "Login", "Email atau kata sandi salah")
                     }
 
                     500 -> {
                         _startActivityEvent.value = "Internal server error"
+                        CustomHandler().responseHandler(appContext, "Login", "Internal server error")
                     }
 
                     else -> {
                         _startActivityEvent.value = response.errorBody().toString()
+                        CustomHandler().responseHandler(appContext, "Login", response.errorBody().toString())
                     }
                 }
             }
