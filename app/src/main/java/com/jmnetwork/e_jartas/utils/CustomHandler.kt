@@ -1,9 +1,10 @@
 package com.jmnetwork.e_jartas.utils
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.crashlytics.setCustomKeys
+import com.google.firebase.ktx.Firebase
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.utils.room.Logger
 import com.jmnetwork.e_jartas.utils.room.LoggerDatabase
@@ -17,38 +18,39 @@ import java.util.Date
 class CustomHandler {
 
     private lateinit var loggerDatabase: LoggerDatabase
-    private val crashlytics = FirebaseCrashlytics.getInstance()
+    private val crashlytics = Firebase.crashlytics
 
     fun responseHandler(context: Context, func: String, message: String) {
         val now: Date = Calendar.getInstance().time
+        val ctx = context.toString()
         when {
-            message.contains("failed to connect to", ignoreCase = true) -> {
+            message.contains("failed to connect to") -> {
                 Toasty.error(context, "Terdapat permasalahan pada server", Toasty.LENGTH_LONG).show()
-                crashlytics.log("Server connection failed in $func")
                 crashlytics.recordException(Exception("Server connection failed"))
             }
 
             message.contains("Unable to resolve host") -> {
                 Toasty.error(context, "Silahkan cek koneksi internet Anda", Toasty.LENGTH_LONG).show()
-                crashlytics.log("Unable to resolve host in $func")
+                crashlytics.log("Unable to resolve host in $func, context: $ctx")
                 crashlytics.recordException(Exception("Unable to resolve host"))
             }
 
             message.contains("Forbidden") -> {
                 Toasty.error(context, "File yang Anda upload tidak didukung", Toasty.LENGTH_LONG).show()
-                crashlytics.log("Forbidden file upload in $func")
-                crashlytics.recordException(Exception("Forbidden file upload"))
+                crashlytics.log("Forbidden file upload in $func, context: $ctx")
             }
 
             message.contains("Unauthorized") -> {
-                Toasty.warning(context, "Unauthorized access", Toasty.LENGTH_LONG).show()
-                crashlytics.log("Unauthorized access")
-                crashlytics.recordException(Exception("Unauthorized access"))
+                crashlytics.setCustomKeys {
+                    key("context", ctx)
+                    key("function", func)
+                    key("message", message)
+                }
             }
 
             else -> {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
-                crashlytics.log("Unknown error in $func: $message")
+                crashlytics.log("Unknown error in $func: $message, context: $ctx")
                 crashlytics.recordException(Exception("Unknown error: $message"))
             }
         }
@@ -56,7 +58,7 @@ class CustomHandler {
         GlobalScope.launch {
             insertDB(context, func, message, now.toString())
         }
-        Log.e("Logger", "context : $context, fun : $func, message : $message, time : $now")
+//        Log.e("Logger", "context : $context, fun : $func, message : $message, time : $now")
     }
 
     fun parseError(message: String): String {
