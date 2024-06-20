@@ -2,7 +2,7 @@ package com.jmnetwork.e_jartas.utils
 
 object Constants {
     const val LOGIN = "login"
-    const val TokenAuth = "token_auth"
+    const val TOKEN_AUTH = "token_auth"
     const val USER = "user"
     const val USER_IDADMIN = "idadmin"
     const val USER_EMAIL = "email"

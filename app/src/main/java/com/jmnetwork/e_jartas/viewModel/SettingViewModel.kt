@@ -51,7 +51,7 @@ class SettingViewModel(application: Application) : ViewModel() {
         callback: (Boolean) -> Unit
     ) {
         myPreferences = MySharedPreferences(appContext)
-        val tokenAuth = myPreferences.getValue(Constants.TokenAuth).toString()
+        val tokenAuth = myPreferences.getValue(Constants.TOKEN_AUTH).toString()
         RetrofitClient.apiService.updateProfile(
             idadmin, nama, alamat, telp, foto, tokenAuth
         ).enqueue(object : Callback<LoginResponse> {

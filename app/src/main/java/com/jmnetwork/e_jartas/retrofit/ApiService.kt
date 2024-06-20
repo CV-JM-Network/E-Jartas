@@ -1,5 +1,6 @@
 package com.jmnetwork.e_jartas.retrofit
 
+import com.jmnetwork.e_jartas.model.DashboardResponse
 import com.jmnetwork.e_jartas.model.LoginResponse
 import com.jmnetwork.e_jartas.model.LoginWebappResponse
 import okhttp3.MultipartBody
@@ -7,6 +8,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -40,4 +42,9 @@ interface ApiService {
         @Field("device_id") deviceId: String,
         @Header("Authorization") authorization: String,
     ): Call<LoginWebappResponse>
+
+    @GET("dashboard")
+    fun dashboard(
+        @Header("Authorization") authorization: String,
+    ): Call<DashboardResponse>
 }

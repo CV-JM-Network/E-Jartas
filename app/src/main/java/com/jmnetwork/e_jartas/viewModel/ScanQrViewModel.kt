@@ -16,7 +16,6 @@ import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.regex.Pattern
 
 class ScanQrViewModel(application: Application): ViewModel() {
 
@@ -36,7 +35,7 @@ class ScanQrViewModel(application: Application): ViewModel() {
         myPreferences = MySharedPreferences(appContext)
 
         val idAdmin = myPreferences.getValueInteger(Constants.USER_IDADMIN).toString()
-        val tokenAuth = myPreferences.getValue(Constants.TokenAuth).toString()
+        val tokenAuth = myPreferences.getValue(Constants.TOKEN_AUTH).toString()
         if (result.contains("webapp")) {
             vibrate(appContext)
             loginWebApp(appContext, idAdmin, result, tokenAuth) {

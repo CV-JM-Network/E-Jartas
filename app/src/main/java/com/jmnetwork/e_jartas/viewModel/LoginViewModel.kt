@@ -42,7 +42,7 @@ class LoginViewModel(application: Application) : ViewModel() {
     fun login() {
         myPreferences = MySharedPreferences(appContext)
         val apiKey = BuildConfig.API_KEY
-        myPreferences.setValue(Constants.TokenAuth, apiKey)
+        myPreferences.setValue(Constants.TOKEN_AUTH, apiKey)
         val deviceID = Settings.Secure.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
 
         RetrofitClient.apiService.login(
@@ -80,7 +80,7 @@ class LoginViewModel(application: Application) : ViewModel() {
                     else -> {
                         _startActivityEvent.value = response.errorBody().toString()
                         val errMsg = CustomHandler().parseError(response.errorBody()!!.string())
-                        CustomHandler().responseHandler(appContext, "Login|onResponse", errMsg)
+                        CustomHandler().responseHandler(appContext, "Login|onResponse", errMsg, response.code())
                     }
                 }
             }
