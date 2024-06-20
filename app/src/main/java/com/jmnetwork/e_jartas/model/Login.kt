@@ -25,3 +25,11 @@ data class UserModel(
     @SerializedName("nama") val nama: String,
     @SerializedName("telp") val telp: String
 )
+
+data class LoginWebappResponse(
+    @SerializedName("status") val status: String,
+    @SerializedName("message") val message: String,
+    @SerializedName("token") val token: String,
+    @SerializedName("device_token") val deviceToken: Any?,
+    @SerializedName("idamin") val idamin: String
+)

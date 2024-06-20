@@ -69,24 +69,24 @@ class LoginViewModel(application: Application) : ViewModel() {
 
                     401 -> {
                         _startActivityEvent.value = "Email atau kata sandi salah"
-                        CustomHandler().responseHandler(appContext, "Login", response.message())
+                        CustomHandler().responseHandler(appContext, "Login|onResponse", response.message())
                     }
 
                     500 -> {
                         _startActivityEvent.value = "Internal server error"
-                        CustomHandler().responseHandler(appContext, "Login", response.message())
+                        CustomHandler().responseHandler(appContext, "Login|onResponse", response.message(), 500)
                     }
 
                     else -> {
                         _startActivityEvent.value = response.errorBody().toString()
                         val errMsg = CustomHandler().parseError(response.errorBody()!!.string())
-                        CustomHandler().responseHandler(appContext, "Login", errMsg)
+                        CustomHandler().responseHandler(appContext, "Login|onResponse", errMsg)
                     }
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                CustomHandler().responseHandler(appContext, "Login", t.message.toString())
+                CustomHandler().responseHandler(appContext, "Login|onFailure", t.message.toString())
                 _startActivityEvent.value = "failure"
             }
         })

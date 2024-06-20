@@ -1,6 +1,7 @@
 package com.jmnetwork.e_jartas.retrofit
 
 import com.jmnetwork.e_jartas.model.LoginResponse
+import com.jmnetwork.e_jartas.model.LoginWebappResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -31,4 +32,12 @@ interface ApiService {
         @Part foto: MultipartBody.Part? = null,
         @Header("Authorization") authorization: String,
     ): Call<LoginResponse>
+
+    @FormUrlEncoded
+    @POST("webapp")
+    fun loginWebapp(
+        @Field("idadmin") idadmin: String,
+        @Field("device_id") deviceId: String,
+        @Header("Authorization") authorization: String,
+    ): Call<LoginWebappResponse>
 }

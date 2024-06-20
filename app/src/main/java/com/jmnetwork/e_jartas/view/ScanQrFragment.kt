@@ -44,20 +44,26 @@ class ScanQrFragment : Fragment() {
                 decodeCallback = DecodeCallback { qrString ->
                     requireActivity().runOnUiThread {
                         loadingAnim.visibility = View.VISIBLE
-//                        viewModel.validateQRCode(qrString.text) { result ->
-//                            when (result) {
-//                                "webapp_success" -> {
-//                                    val bundle = Bundle()
-//                                    bundle.putString("page", "home")
-//                                    (activity as MainActivity).loadFragment(HomeFragment(), bundle)
-//                                }
-//
-//                                "webapp_failure" -> {
-//                                    loadingAnim.visibility = View.GONE
-//                                    startPreview()
-//                                }
-//                            }
-//                        }
+                        viewModel.validateQRCode(qrString.text) { result ->
+                            when (result) {
+                                "webapp_success" -> {
+                                    val bundle = Bundle()
+                                    bundle.putString("page", "home")
+                                    (activity as MainActivity).loadFragment(HomeFragment(), bundle)
+                                }
+
+                                "qr_code_invalid" -> {
+                                    Toasty.error(requireContext(), "Invalid QR code", Toasty.LENGTH_LONG).show()
+                                    loadingAnim.visibility = View.GONE
+                                    startPreview()
+                                }
+
+                                else -> {
+                                    loadingAnim.visibility = View.GONE
+                                    startPreview()
+                                }
+                            }
+                        }
                     }
                 }
 

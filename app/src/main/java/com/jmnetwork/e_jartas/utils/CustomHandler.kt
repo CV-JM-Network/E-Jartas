@@ -20,7 +20,7 @@ class CustomHandler {
     private lateinit var loggerDatabase: LoggerDatabase
     private val crashlytics = Firebase.crashlytics
 
-    fun responseHandler(context: Context, func: String, message: String) {
+    fun responseHandler(context: Context, func: String, message: String = "", code: Int = 200) {
         val now: Date = Calendar.getInstance().time
         val ctx = context.toString()
         when {
@@ -48,10 +48,20 @@ class CustomHandler {
                 }
             }
 
+            code == 400 -> {
+                val msg = parseError(message)
+                Toasty.error(context, msg, Toasty.LENGTH_LONG).show()
+                crashlytics.recordException(Exception("Bad request: $msg, context: $ctx"))
+            }
+
+            code == 500 -> {
+                Toasty.error(context, "Internal server error", Toasty.LENGTH_LONG).show()
+                crashlytics.recordException(Exception("Internal server error, context: $ctx"))
+            }
+
             else -> {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
-                crashlytics.log("Unknown error in $func: $message, context: $ctx")
-                crashlytics.recordException(Exception("Unknown error: $message"))
+                crashlytics.recordException(Exception("General error: $message, context: $ctx"))
             }
         }
 
