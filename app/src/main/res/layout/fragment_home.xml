@@ -15,12 +15,13 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Info Terkini"
+            android:text="@string/info_terkini"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -39,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:backgroundTint="?attr/colorTertiaryContainer"
                     android:orientation="vertical"
                     android:padding="12dp">
 
@@ -48,7 +49,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:text="Tiang"
+                        android:text="@string/tiang"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -57,6 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -65,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:backgroundTint="?attr/colorTertiaryContainer"
                     android:orientation="vertical"
                     android:padding="12dp">
 
@@ -74,7 +77,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:text="Titik Lokasi"
+                        android:text="@string/titik_lokasi"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -83,6 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -91,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:backgroundTint="?attr/colorTertiaryContainer"
                     android:orientation="vertical"
                     android:padding="12dp">
 
@@ -99,7 +104,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="Jalan"
+                        android:text="@string/jalan"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -107,6 +113,7 @@
                         android:id="@+id/tv_jalan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -115,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:backgroundTint="?attr/colorTertiaryContainer"
                     android:orientation="vertical"
                     android:padding="12dp">
 
@@ -124,7 +131,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:text="Panjang"
+                        android:text="@string/panjang"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -133,6 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -141,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:backgroundTint="?attr/colorTertiaryContainer"
                     android:orientation="vertical"
                     android:padding="12dp">
 
@@ -150,7 +159,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:text="Provider"
+                        android:text="@string/provider"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -159,12 +169,106 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textColor="?attr/colorOnTertiaryContainer"
                         android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
         </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/tv_manajemen_jalan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="@string/manajemen_jalan"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+        <LinearLayout
+            android:id="@+id/ll_manajemen_jalan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_manajemen_jalan">
+
+            <LinearLayout
+                android:id="@+id/btn_tambah_jalan"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/menu_box"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="@string/icon_manajemen_jalan"
+                    android:src="@drawable/ic_add_road"
+                    app:tint="?attr/colorOnSecondaryContainer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/tambah_ruas_jalan"
+                    android:textColor="?attr/colorOnSecondaryContainer"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_ruas_jalan"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/menu_box"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="@string/icon_ruas_jalan"
+                    android:src="@drawable/ic_road"
+                    app:tint="?attr/colorOnSecondaryContainer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/ruas_jalan"
+                    android:textColor="?attr/colorOnSecondaryContainer"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="@string/manajemen_tiang"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_manajemen_jalan" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

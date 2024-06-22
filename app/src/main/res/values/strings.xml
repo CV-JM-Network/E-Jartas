@@ -22,4 +22,17 @@
     <string name="confirm_logout">Anda Yakin Ingin Logout?</string>
     <string name="no">Tidak</string>
     <string name="yes">Ya</string>
+    <string name="panjang_km">%1$s Km</string>
+    <string name="manajemen_jalan">Manajemen Jalan</string>
+    <string name="icon_manajemen_jalan">ikon tombol manajemen jalan</string>
+    <string name="ruas_jalan">Ruas Jalan</string>
+    <string name="icon_ruas_jalan">ikon tombol ruas jalan</string>
+    <string name="info_terkini">Info Terkini</string>
+    <string name="tiang">Tiang</string>
+    <string name="titik_lokasi">Titik Lokasi</string>
+    <string name="jalan">Jalan</string>
+    <string name="panjang">Panjang</string>
+    <string name="provider">Provider</string>
+    <string name="manajemen_tiang">Manajemen Tiang</string>
+    <string name="tambah_ruas_jalan">Tambah Ruas Jalan</string>
 </resources>

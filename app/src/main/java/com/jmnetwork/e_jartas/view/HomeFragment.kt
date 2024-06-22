@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FragmentHomeBinding
 import com.jmnetwork.e_jartas.viewModel.HomeViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
@@ -28,10 +29,10 @@ class HomeFragment : Fragment() {
         binding.apply {
             viewModel.getDashboard()
             viewModel.dashboardData.observe(viewLifecycleOwner) { data ->
-                tvTiang.text = data.tiangTerdata.toString()
+                tvTiang.text = formatNumber(data.tiangTerdata)
                 tvTitikLokasi.text = formatNumber(data.titikTiang)
                 tvJalan.text = formatNumber(data.jumlahRuasJalan)
-                tvPanjang.text = formatNumber(data.panjangRuasJalan)
+                tvPanjang.text = getString(R.string.panjang_km, formatNumber(data.panjangRuasJalan))
                 tvProvider.text = formatNumber(data.jumlahProvider)
             }
         }
