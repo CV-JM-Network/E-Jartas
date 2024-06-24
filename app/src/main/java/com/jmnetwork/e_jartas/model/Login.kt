@@ -8,7 +8,7 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
-    @SerializedName("data") val data: UserModel,
+    @SerializedName("data") val data: UserModel?,
     @SerializedName("message") val message: String,
     @SerializedName("status") val status: String,
     @SerializedName("tokenAuth") val tokenAuth: String

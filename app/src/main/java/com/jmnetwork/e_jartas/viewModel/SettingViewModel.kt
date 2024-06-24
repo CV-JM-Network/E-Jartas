@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.LoginResponse
 import com.jmnetwork.e_jartas.model.UserModel
-import com.jmnetwork.e_jartas.retrofit.RetrofitClient
+import com.jmnetwork.e_jartas.repository.RetrofitClient
 import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty

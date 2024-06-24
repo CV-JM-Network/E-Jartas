@@ -1,4 +1,4 @@
-package com.jmnetwork.e_jartas.retrofit
+package com.jmnetwork.e_jartas.repository
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

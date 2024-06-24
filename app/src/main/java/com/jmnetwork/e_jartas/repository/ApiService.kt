@@ -1,4 +1,4 @@
-package com.jmnetwork.e_jartas.retrofit
+package com.jmnetwork.e_jartas.repository
 
 import com.jmnetwork.e_jartas.model.DashboardResponse
 import com.jmnetwork.e_jartas.model.LoginResponse

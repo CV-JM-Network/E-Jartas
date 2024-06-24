@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
         binding.apply {
-            viewModel.getDashboard()
             viewModel.dashboardData.observe(viewLifecycleOwner) { data ->
                 tvTiang.text = formatNumber(data.tiangTerdata)
                 tvTitikLokasi.text = formatNumber(data.titikTiang)
