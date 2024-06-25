@@ -35,4 +35,14 @@
     <string name="provider">Provider</string>
     <string name="manajemen_tiang">Manajemen Tiang</string>
     <string name="tambah_ruas_jalan">Tambah Ruas Jalan</string>
+    <string name="btn_back">tombol kembali</string>
+    <string name="icon_empty">ikon data kosong</string>
+    <string name="nomor_ruas_jalan">No. Ruas Jalan: %1$s</string>
+    <string name="kecamatan">Kecamatan: %1$s</string>
+    <string name="desa">Desa: %1$s</string>
+    <string name="panjang_jalan">Panjang: %1$s Km</string>
+    <string name="status">Status: %1$s</string>
+    <string name="tipe">Tipe: %1$s</string>
+    <string name="fungsi">Fungsi: %1$s</string>
+    <string name="ruas_jalan_detail">Lihat Detail</string>
 </resources>

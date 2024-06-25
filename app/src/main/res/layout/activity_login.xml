@@ -14,7 +14,7 @@
         android:layout_marginHorizontal="32dp"
         android:backgroundTint="?attr/colorSecondaryContainer"
         android:elevation="4dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

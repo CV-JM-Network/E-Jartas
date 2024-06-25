@@ -11,6 +11,7 @@ class ViewModelFactory private constructor(private val application: Application)
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(application) as T
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel(application) as T
+            modelClass.isAssignableFrom(ManajemenJalanViewModel::class.java) -> ManajemenJalanViewModel(application) as T
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> SettingViewModel(application) as T
             modelClass.isAssignableFrom(ScanQrViewModel::class.java) -> ScanQrViewModel(application) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

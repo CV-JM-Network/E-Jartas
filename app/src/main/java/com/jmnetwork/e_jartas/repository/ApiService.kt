@@ -3,6 +3,7 @@ package com.jmnetwork.e_jartas.repository
 import com.jmnetwork.e_jartas.model.DashboardResponse
 import com.jmnetwork.e_jartas.model.LoginResponse
 import com.jmnetwork.e_jartas.model.LoginWebappResponse
+import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -13,6 +14,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
     @FormUrlEncoded
@@ -47,4 +49,12 @@ interface ApiService {
     fun dashboard(
         @Header("Authorization") authorization: String,
     ): Call<DashboardResponse>
+
+    @GET("get/data")
+    fun getRuasJalan(
+        @Query("limit") limit: Int,
+        @Query("current_page") page: Int,
+        @Query("data_tabel") tabel: String,
+        @Header("Authorization") authorization: String
+    ): Call<RuasJalanResponse>
 }

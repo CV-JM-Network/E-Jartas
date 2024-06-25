@@ -209,7 +209,8 @@
                 android:backgroundTint="?attr/colorSecondaryContainer"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -223,6 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
                     android:text="@string/tambah_ruas_jalan"
                     android:textColor="?attr/colorOnSecondaryContainer"
                     android:textSize="16sp" />
@@ -238,7 +240,8 @@
                 android:backgroundTint="?attr/colorSecondaryContainer"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
