@@ -14,9 +14,9 @@ the poles for easy identification and management.
 To install and set up the Ejartas app on your Android device, follow these steps:
 
 1. **Clone the repository**:
-   \`\`\`bash
+   ```bash
    git clone https://github.com/CV-JM-Network/E-Jartas.git
-   \`\`\`
+   ```
 
 2. **Open the project in Android Studio**:
     - Launch Android Studio.
