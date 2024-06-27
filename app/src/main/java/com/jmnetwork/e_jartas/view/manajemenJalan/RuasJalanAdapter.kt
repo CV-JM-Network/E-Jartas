@@ -1,11 +1,15 @@
 package com.jmnetwork.e_jartas.view.manajemenJalan
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.ItemRuasJalanBinding
 import com.jmnetwork.e_jartas.model.RuasJalanData
+import org.json.JSONArray
 
 class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
 
@@ -18,8 +22,7 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
         notifyItemRangeChanged(prevSize, item.size)
     }
 
-    inner class ItemHolder(private val binding: ItemRuasJalanBinding) : RecyclerView.ViewHolder(binding.root) {
-
+    class ItemHolder(private val binding: ItemRuasJalanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RuasJalanData) {
             binding.apply {
                 tvNomorRuasJalan.text = itemView.context.getString(R.string.nomor_ruas_jalan, item.noRuas)
@@ -31,41 +34,25 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
                 tvTipe.text = itemView.context.getString(R.string.tipe, item.tipe)
                 tvFungsi.text = itemView.context.getString(R.string.fungsi, item.fungsi)
 
-//                var position = LatLng(0.0, 0.0)
-//                if (item.latlong != null) {
-//                    val rawLatLng = JSONArray(item.latlong).getJSONObject(0)
-//                    val lat = rawLatLng.getString("lat").toDouble()
-//                    val lng = rawLatLng.getString("lng").toDouble()
-//                    position = LatLng(lat, lng)
-//                }
-//
-//                btnDetail.setOnClickListener {
-//                    selectedPosition = if (position.latitude == 0.0 && position.longitude == 0.0) null else position
-//                    showBottomSheet()
-//                }
+                var position: LatLng? = null
+                if (item.latlong != null) {
+                    val rawLatLng = JSONArray(item.latlong).getJSONObject(0)
+                    val lat = rawLatLng.getString("lat").toDouble()
+                    val lng = rawLatLng.getString("lng").toDouble()
+                    position = LatLng(lat, lng)
+                }
+
+                itemRuasJalan.setOnClickListener {
+                    val bottomSheet = BottomSheetItemRuasJalan().apply {
+                        arguments = Bundle().apply {
+                            putParcelable("latLng", position)
+                            putString("namaRuasJalan", item.namaRuasJalan)
+                        }
+                    }
+                    bottomSheet.show((itemView.context as AppCompatActivity).supportFragmentManager, bottomSheet.tag)
+                }
             }
         }
-
-//        private fun showBottomSheet() {
-//            val bottomSheetBinding = BottomSheetRuasDetailBinding.inflate(LayoutInflater.from(itemView.context))
-//            val dialog = BottomSheetDialog(itemView.context).apply {
-//                setCancelable(true)
-//                setContentView(bottomSheetBinding.root)
-//            }
-//
-//            val mapFragment = SupportMapFragment.newInstance()
-//            bottomSheetBinding.ruasDetilMapFrame.apply {
-//                (dialog.context as AppCompatActivity).supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(id, mapFragment)
-//                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                    .commitNow()
-//            }
-//
-//            mapFragment.getMapAsync(this@RuasJalanAdapter)
-//
-//            dialog.show()
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {

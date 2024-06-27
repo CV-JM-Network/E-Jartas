@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
-import com.jmnetwork.e_jartas.repository.BaseRepositoryImpl
+import com.jmnetwork.e_jartas.repository.ManajemenJalanRepositoryImpl
 import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
 import org.json.JSONObject
@@ -14,12 +14,11 @@ import org.json.JSONObject
 class ManajemenJalanViewModel(appContext: Application) : ViewModel() {
     private val appContext: Application = appContext
     private var myPreferences = MySharedPreferences(appContext)
-    private val repository = BaseRepositoryImpl()
+    private val repository = ManajemenJalanRepositoryImpl()
 
     private val tokenAuth = myPreferences.getValue(Constants.TOKEN_AUTH).toString()
     private val idAdmin = myPreferences.getValueInteger(Constants.USER_IDADMIN)
 
-    //    private val _ruasJalanData: LiveData<RuasJalanResponse> = repository.getRuasJalan(appContext, 10, 1, "ruas_jalan", tokenAuth)
     val ruasJalanData: MutableLiveData<RuasJalanResponse> = MutableLiveData()
 
     val kecamatanSpinner = repository.getSpinnerData(appContext, "kecamatan", tokenAuth)

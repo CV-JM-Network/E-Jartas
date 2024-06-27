@@ -22,50 +22,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/ruas_detil_map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginTop="10dp"
-            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separator1">
+            app:layout_constraintTop_toBottomOf="@+id/separator1" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ruas_detil_map">
 
-                <FrameLayout
-                    android:id="@+id/ruas_detil_map_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+            <Button
+                android:id="@+id/btn_hapus_item"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:backgroundTint="?attr/colorError"
+                android:padding="16dp"
+                android:text="@string/btn_hapus_ruas_jalan"
+                android:textColor="@android:color/white" />
 
-<!--                    <androidx.fragment.app.FragmentContainerView-->
-<!--                        android:id="@+id/ruas_detil_map"-->
-<!--                        android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="200dp" />-->
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_ruas_detil_nama"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Nama Ruas"
-                    android:textColor="?attr/colorOnSecondaryContainer"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ruas_detil_map_frame" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
+            <Button
+                android:id="@+id/btn_edit_item"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="?attr/colorPrimary"
+                android:padding="16dp"
+                android:text="@string/btn_edit_ruas_jalan"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

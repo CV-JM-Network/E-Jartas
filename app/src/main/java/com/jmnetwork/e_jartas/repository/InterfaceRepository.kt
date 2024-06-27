@@ -13,7 +13,12 @@ import com.jmnetwork.e_jartas.model.SpinnerResponse
 interface BaseRepository {
     fun login(context: Context, loginRequest: LoginRequest, deviceID: String, tokenAuth: String): LiveData<LoginResponse>
     fun getDashboard(context: Context, tokenAuth: String): LiveData<DasboardModel>
+}
+
+interface ManajemenJalanRepository {
+    fun getSpinnerData(context: Context, varian: String, tokenAuth: String): LiveData<SpinnerResponse>
     fun getRuasJalan(context: Context, limit: Int, page: Int, tabel: String, tokenAuth: String): LiveData<RuasJalanResponse>
     fun addRuasJalan(context: Context, idadmin: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
-    fun getSpinnerData(context: Context, varian: String, tokenAuth: String): LiveData<SpinnerResponse>
+    fun editRuasJalan(context: Context, idadmin: Int, iddata: String, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
+    fun deleteRuasJalan(context: Context, idadmin: Int, iddata: String, tokenAuth: String): LiveData<DefaultResponse>
 }

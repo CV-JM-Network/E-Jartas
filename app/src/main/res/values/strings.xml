@@ -50,4 +50,6 @@
     <string name="btn_tambah_ruas_jalan">Tambahkan Ruas Jalan</string>
     <string name="koordinat_ruas_jalan">Koordinat Ruas Jalan</string>
     <string name="input_panjang_ruas_jalan">Panjang Ruas Jalan (Km)</string>
+    <string name="btn_hapus_ruas_jalan">Hapus Data</string>
+    <string name="btn_edit_ruas_jalan">Edit Data</string>
 </resources>

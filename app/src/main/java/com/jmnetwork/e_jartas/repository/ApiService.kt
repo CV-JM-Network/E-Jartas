@@ -69,10 +69,10 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("ruas_jalan/post/data")
-    fun postRuasJalan(
-        @Field("action") action: String = "add",
-        @Field("iddata") iddata: String = "null",
-        @Field("data") data: JSONObject,
+    fun ruasJalan(
+        @Field("action") action: String,
+        @Field("iddata") iddata: String?,
+        @Field("data") data: JSONObject?,
         @Field("oleh") idadmin: Int,
         @Header("Authorization") authorization: String
     ): Call<DefaultResponse>
