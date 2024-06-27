@@ -48,6 +48,14 @@ class RuasJalanActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
             }
 
+            btnTambahRuas.setOnClickListener {
+                startActivity(
+                    Intent(this@RuasJalanActivity, AddRuasJalanActivity::class.java)
+                        .putExtra(AddRuasJalanActivity.EXTRA_SOURCE_ACTIVITY, "ruas")
+                )
+            }
+
+            viewModel.getRuasJalan(10, 1)
             viewModel.ruasJalanData.observe(this@RuasJalanActivity) {
                 if (it != null) {
                     adapter.setItem(it.data)

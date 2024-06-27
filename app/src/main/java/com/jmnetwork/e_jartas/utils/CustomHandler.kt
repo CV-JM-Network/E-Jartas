@@ -1,6 +1,7 @@
 package com.jmnetwork.e_jartas.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
@@ -61,6 +62,7 @@ class CustomHandler {
 
             else -> {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
+                Log.e("Logger", "context : $context, fun : $func, message : $message, time : $now")
                 crashlytics.recordException(Exception("General error: $message, context: $ctx"))
             }
         }

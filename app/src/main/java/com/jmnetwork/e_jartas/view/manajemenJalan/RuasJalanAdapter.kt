@@ -8,11 +8,8 @@ import com.jmnetwork.e_jartas.databinding.ItemRuasJalanBinding
 import com.jmnetwork.e_jartas.model.RuasJalanData
 
 class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
-//    class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>(), OnMapReadyCallback {
 
     private var list = ArrayList<RuasJalanData>()
-//    private lateinit var mMap: GoogleMap
-//    private var selectedPosition: LatLng? = null
 
     fun setItem(item: List<RuasJalanData>?) {
         if (item == null) return
@@ -82,25 +79,4 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
     }
 
     override fun getItemCount(): Int = list.size
-
-//    override fun onMapReady(googleMap: GoogleMap) {
-//        mMap = googleMap
-//
-//        with(mMap) {
-//            uiSettings.apply {
-//                isScrollGesturesEnabled = true
-//                isZoomGesturesEnabled = true
-//            }
-//            mapType = GoogleMap.MAP_TYPE_NORMAL
-//
-//            selectedPosition?.let {
-//                val markerOption = MarkerOptions()
-//                    .position(it)
-//                    .draggable(false)
-//
-//                addMarker(markerOption)
-//                moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
-//            }
-//        }
-//    }
 }

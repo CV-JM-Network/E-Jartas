@@ -45,4 +45,9 @@
     <string name="tipe">Tipe: %1$s</string>
     <string name="fungsi">Fungsi: %1$s</string>
     <string name="ruas_jalan_detail">Lihat Detail</string>
+    <string name="input_nomor_ruas_jalan">Nomor Ruas Jalan</string>
+    <string name="input_nama_ruas_jalan">Nama Ruas Jalan</string>
+    <string name="btn_tambah_ruas_jalan">Tambahkan Ruas Jalan</string>
+    <string name="koordinat_ruas_jalan">Koordinat Ruas Jalan</string>
+    <string name="input_panjang_ruas_jalan">Panjang Ruas Jalan (Km)</string>
 </resources>
