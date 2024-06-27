@@ -175,7 +175,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                                 onBackPressedDispatcher.onBackPressed()
                             }
 
-                            "failure" -> {
+                            else -> {
                                 Toasty.error(this@AddRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
                                 btnTambahRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                             }

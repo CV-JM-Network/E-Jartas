@@ -45,6 +45,7 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
                 itemRuasJalan.setOnClickListener {
                     val bottomSheet = BottomSheetItemRuasJalan().apply {
                         arguments = Bundle().apply {
+                            putInt("idRuasJalan", item.idruasJalan)
                             putParcelable("latLng", position)
                             putString("namaRuasJalan", item.namaRuasJalan)
                         }

@@ -11,8 +11,8 @@ import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
 import org.json.JSONObject
 
-class ManajemenJalanViewModel(appContext: Application) : ViewModel() {
-    private val appContext: Application = appContext
+class ManajemenJalanViewModel(application: Application) : ViewModel() {
+    private val appContext: Application = application
     private var myPreferences = MySharedPreferences(appContext)
     private val repository = ManajemenJalanRepositoryImpl()
 
@@ -85,6 +85,12 @@ class ManajemenJalanViewModel(appContext: Application) : ViewModel() {
 
     fun addRuasJalan(callback: (String, String) -> Unit) {
         repository.addRuasJalan(appContext, idAdmin, addRuasJalanRequest, tokenAuth).observeForever {
+            callback(it.status, it.message)
+        }
+    }
+
+    fun deleteRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
+        repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever {
             callback(it.status, it.message)
         }
     }

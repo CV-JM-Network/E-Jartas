@@ -116,7 +116,7 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
     }
 
     override fun editRuasJalan(
-        context: Context, idadmin: Int, iddata: String, requestData: RuasJalanRequest, tokenAuth: String
+        context: Context, idadmin: Int, iddata: Int, requestData: RuasJalanRequest, tokenAuth: String
     ): LiveData<DefaultResponse> {
         val result = MutableLiveData<DefaultResponse>()
         val dataJson = Gson().toJson(requestData)
@@ -154,7 +154,7 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
         return result
     }
 
-    override fun deleteRuasJalan(context: Context, idadmin: Int, iddata: String, tokenAuth: String): LiveData<DefaultResponse> {
+    override fun deleteRuasJalan(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse> {
         val result = MutableLiveData<DefaultResponse>()
 
         apiService.ruasJalan("delete", iddata, null, idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {

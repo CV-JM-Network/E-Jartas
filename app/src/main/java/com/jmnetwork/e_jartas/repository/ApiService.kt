@@ -71,7 +71,7 @@ interface ApiService {
     @POST("ruas_jalan/post/data")
     fun ruasJalan(
         @Field("action") action: String,
-        @Field("iddata") iddata: String?,
+        @Field("iddata") iddata: Int?,
         @Field("data") data: JSONObject?,
         @Field("oleh") idadmin: Int,
         @Header("Authorization") authorization: String

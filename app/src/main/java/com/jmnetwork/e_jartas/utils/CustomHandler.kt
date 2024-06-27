@@ -50,9 +50,8 @@ class CustomHandler {
             }
 
             code == 400 -> {
-                val msg = parseError(message)
-                Toasty.error(context, msg, Toasty.LENGTH_LONG).show()
-                crashlytics.recordException(Exception("Bad request: $msg, context: $ctx"))
+                Toasty.error(context, "Bad request", Toasty.LENGTH_LONG).show()
+                crashlytics.recordException(Exception("Bad request, context: $ctx"))
             }
 
             code == 500 -> {

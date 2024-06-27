@@ -46,5 +46,13 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+
+        <!-- Customize your theme here. -->
+        <item name="material_dialog_background">?attr/colorTertiaryContainer</item>
+        <item name="material_dialog_title_text_color">?attr/colorOnTertiaryContainer</item>
+        <item name="material_dialog_message_text_color">?attr/colorOnTertiaryContainer</item>
+        <item name="material_dialog_positive_button_color">?attr/colorTertiary</item>
+        <item name="material_dialog_positive_button_text_color">?attr/colorOnTertiary</item>
+        <item name="material_dialog_negative_button_text_color">?attr/colorOnTertiaryContainer</item>
     </style>
 </resources>

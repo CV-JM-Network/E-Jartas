@@ -19,6 +19,6 @@ interface ManajemenJalanRepository {
     fun getSpinnerData(context: Context, varian: String, tokenAuth: String): LiveData<SpinnerResponse>
     fun getRuasJalan(context: Context, limit: Int, page: Int, tabel: String, tokenAuth: String): LiveData<RuasJalanResponse>
     fun addRuasJalan(context: Context, idadmin: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
-    fun editRuasJalan(context: Context, idadmin: Int, iddata: String, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
-    fun deleteRuasJalan(context: Context, idadmin: Int, iddata: String, tokenAuth: String): LiveData<DefaultResponse>
+    fun editRuasJalan(context: Context, idadmin: Int, iddata: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
+    fun deleteRuasJalan(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse>
 }
