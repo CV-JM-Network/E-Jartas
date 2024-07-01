@@ -34,10 +34,11 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     }
 
     private var addRuasJalanRequest: RuasJalanRequest = RuasJalanRequest(
-        "", "", "", "", "", "", "", "", emptyList(), emptyList()
+        0, "", "", "", "", "", "", "", "", emptyList(), emptyList()
     )
 
-    fun setLoginRequest(
+    fun setAddRuasJalanRequest(
+        idRuasJalan: Int,
         noRuas: String,
         namaRuasJalan: String,
         desa: String,
@@ -67,6 +68,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         if (latlong.isEmpty()) return "Latlong tidak boleh kosong"
 
         addRuasJalanRequest = RuasJalanRequest(
+            idRuasJalan,
             noRuas,
             namaRuasJalan,
             desa,
@@ -90,7 +92,18 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     }
 
     fun deleteRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
-        repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever {
+        repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever { it ->
+            if (it.status == "success") {
+                // Use Transformations.map to create a new LiveData with the updated list
+                ruasJalanData.value?.let { currentData ->
+                    val updatedList = currentData.data.toMutableList().let { mutableList ->
+                        val dataToRemove = mutableList.find { it.idRuasJalan == idruas }
+                        mutableList.remove(dataToRemove)
+                        mutableList.toList() // Convert back to immutable list
+                    }
+                    ruasJalanData.value = updatedList.let { it1 -> currentData.copy(data = it1) }
+                }
+            }
             callback(it.status, it.message)
         }
     }

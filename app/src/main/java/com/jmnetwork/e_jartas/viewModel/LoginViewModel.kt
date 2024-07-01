@@ -47,14 +47,14 @@ class LoginViewModel(application: Application) : ViewModel() {
             if (response.data != null) {
                 val data = response.data
                 myPreferences.setValue(Constants.USER, Constants.LOGIN)
-                myPreferences.setValueInteger(Constants.USER_IDADMIN, data.idadmin)
+                myPreferences.setValueInteger(Constants.USER_IDADMIN, data.idAdmin)
                 myPreferences.setValue(Constants.USER_EMAIL, data.email)
                 myPreferences.setValue(Constants.USER_NAMA, data.nama)
                 myPreferences.setValue(Constants.USER_ALAMAT, data.alamat)
                 myPreferences.setValue(Constants.USER_TELP, data.telp)
                 myPreferences.setValue(Constants.USER_FOTO, data.img)
                 myPreferences.setValue(Constants.USER_LEVEL, data.level)
-                myPreferences.setValueInteger(Constants.USER_IDLEVEL, data.idlevel)
+                myPreferences.setValueInteger(Constants.USER_IDLEVEL, data.idLevel)
                 startActivityEvent.value = Constants.LOGIN
             } else {
                 when (val msg = response.message) {

@@ -18,8 +18,8 @@ data class UserModel(
     @SerializedName("alamat") val alamat: String,
     @SerializedName("device_token") val deviceToken: Any?,
     @SerializedName("email") val email: String,
-    @SerializedName("idadmin") val idadmin: Int,
-    @SerializedName("idlevel") val idlevel: Int,
+    @SerializedName("idadmin") val idAdmin: Int,
+    @SerializedName("idlevel") val idLevel: Int,
     @SerializedName("img") val img: String,
     @SerializedName("level") val level: String,
     @SerializedName("nama") val nama: String,
@@ -31,5 +31,5 @@ data class LoginWebappResponse(
     @SerializedName("message") val message: String,
     @SerializedName("token") val token: String,
     @SerializedName("device_token") val deviceToken: Any?,
-    @SerializedName("idamin") val idamin: String
+    @SerializedName("idamin") val idAdmin: String
 )

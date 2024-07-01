@@ -67,7 +67,7 @@ class SettingViewModel(application: Application) : ViewModel() {
                             myPreferences.setValue(Constants.USER_NAMA, data.nama)
                             myPreferences.setValue(Constants.USER_TELP, data.telp)
                             myPreferences.setValue(Constants.USER_LEVEL, data.level)
-                            myPreferences.setValueInteger(Constants.USER_IDLEVEL, data.idlevel)
+                            myPreferences.setValueInteger(Constants.USER_IDLEVEL, data.idLevel)
                             callback(true)
                         }
                     }

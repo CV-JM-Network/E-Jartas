@@ -29,6 +29,9 @@
         android:theme="@style/Theme.Ejartas"
         tools:targetApi="31">
         <activity
+            android:name=".view.manajemenJalan.EditRuasJalanActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.manajemenJalan.AddRuasJalanActivity"
             android:exported="false" />
         <activity

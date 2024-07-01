@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.jmnetwork.e_jartas.R
-import com.jmnetwork.e_jartas.databinding.ActivityAddRuasJalanBinding
+import com.jmnetwork.e_jartas.databinding.FormRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
 import com.jmnetwork.e_jartas.view.MainActivity
@@ -35,14 +35,13 @@ import es.dmoral.toasty.Toasty
 
 class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var binding: ActivityAddRuasJalanBinding
+    private lateinit var binding: FormRuasJalanBinding
     private lateinit var viewModel: ManajemenJalanViewModel
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var mMap: GoogleMap
     private lateinit var client: FusedLocationProviderClient
 
     private var latLng: LatLng? = null
-
     private var currentMarker: Marker? = null
 
     companion object {
@@ -51,7 +50,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddRuasJalanBinding.inflate(layoutInflater)
+        binding = FormRuasJalanBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this@AddRuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
@@ -150,7 +149,8 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                     latLng?.longitude.toString()
                 )
 
-                val validate = viewModel.setLoginRequest(
+                val validate = viewModel.setAddRuasJalanRequest(
+                    0,
                     inputNoRuas,
                     inputNamaRuas,
                     inputDesa,

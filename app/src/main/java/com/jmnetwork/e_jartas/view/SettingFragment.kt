@@ -81,7 +81,7 @@ class SettingFragment : Fragment() {
             }
 
             btnSave.setOnClickListener {
-                val idAdmin = viewModel.userData.value?.idadmin.toString()
+                val idAdmin = viewModel.userData.value?.idAdmin.toString()
                 val nama = tvValueNameEdit.text.toString()
                 val alamat = tvValueAddressEdit.text.toString()
                 val telp = tvValuePhoneEdit.text.toString()
