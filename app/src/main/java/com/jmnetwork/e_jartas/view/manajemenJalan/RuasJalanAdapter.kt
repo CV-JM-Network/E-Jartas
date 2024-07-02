@@ -1,8 +1,12 @@
 package com.jmnetwork.e_jartas.view.manajemenJalan
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.jmnetwork.e_jartas.R
@@ -12,15 +16,19 @@ import com.jmnetwork.e_jartas.model.RuasJalanData
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import org.json.JSONArray
 
-class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
+class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>(), Filterable {
 
     private var list = ArrayList<RuasJalanData>()
+    private var listFiltered = ArrayList<RuasJalanData>()
 
     fun setItem(item: List<RuasJalanData>?) {
         if (item == null) return
         val prevSize = list.size
         this.list.addAll(item)
+        this.listFiltered = ArrayList(this.list) // Make a copy of the original list
         notifyItemRangeChanged(prevSize, item.size)
+//        Log.d("Original", "count: ${list.size}; item: $list")
+//        Log.d("Filtered", "count: ${listFiltered.size}; item: $listFiltered")
     }
 
     class ItemHolder(private val binding: ItemRuasJalanBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -74,9 +82,42 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        val item = list[position]
+        val item = listFiltered[position] // Use the filtered list
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = listFiltered.size // Return the size of the filtered list
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filterResults = FilterResults()
+                if (constraint == null || constraint.length < 0) {
+                    filterResults.count = list.size
+                    filterResults.values = ArrayList(list) // Make a copy of the original list
+                } else {
+                    val charSearch = constraint.toString()
+                    val resultList = ArrayList<RuasJalanData>()
+                    for (row in list) { // Filter the original list
+                        if (row.namaRuasJalan.lowercase().contains(charSearch.lowercase())
+                            || row.noRuas.lowercase().contains(charSearch.lowercase())
+                        ) {
+                            resultList.add(row)
+                        }
+                    }
+                    filterResults.count = resultList.size
+                    filterResults.values = resultList
+//                    Log.d("Filter1", "count: ${filterResults.count}; item: ${filterResults.values}")
+                }
+                return filterResults
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                listFiltered = results?.values as? ArrayList<RuasJalanData> ?: arrayListOf()
+//                Log.d("Filter2", "count: ${listFiltered.size}; item: $listFiltered")
+                notifyDataSetChanged()
+            }
+        }
+    }
 }

@@ -80,6 +80,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 onBackPressedDispatcher.onBackPressed()
             }
 
+            viewModel.getSpinnerData()
             viewModel.kecamatanSpinner.observe(this@AddRuasJalanActivity) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {

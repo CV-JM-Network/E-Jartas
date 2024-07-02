@@ -2,10 +2,10 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +21,8 @@ class RuasJalanActivity : AppCompatActivity() {
     private lateinit var viewModel: ManajemenJalanViewModel
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: RuasJalanAdapter
+
+    private var currentSearchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,10 +85,26 @@ class RuasJalanActivity : AppCompatActivity() {
                             progressBar.visibility = View.VISIBLE
                             page += 1
                             viewModel.getRuasJalan(limit, page)
+                            currentSearchQuery?.let { this@RuasJalanActivity.adapter.filter.filter(it) }
                         }
                     }
                 })
             }
+
+            searchView.setOnClickListener {
+                searchView.isIconified = false
+            }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    currentSearchQuery = newText
+                    adapter.filter.filter(newText)
+                    return false
+                }
+            })
         }
     }
 }

@@ -71,6 +71,7 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
             btnRuasJalan.text = getString(R.string.edit_ruas_jalan)
 
             viewModel.apply {
+                getSpinnerData()
                 if (idRuasJalan != -1) {
                     if (ruasJalanData != null) {
                         if (ruasJalanData.latLong[0].lat != "" && ruasJalanData.latLong[0].lng != "") {

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
+import com.jmnetwork.e_jartas.model.SpinnerResponse
 import com.jmnetwork.e_jartas.repository.ManajemenJalanRepositoryImpl
 import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
@@ -20,12 +21,11 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     private val idAdmin = myPreferences.getValueInteger(Constants.USER_IDADMIN)
 
     val ruasJalanData: MutableLiveData<RuasJalanResponse> = MutableLiveData()
-
-    val kecamatanSpinner = repository.getSpinnerData(appContext, "kecamatan", tokenAuth)
-    val desaSpinner = repository.getSpinnerData(appContext, "desa", tokenAuth)
-    val statusSpinner = repository.getSpinnerData(appContext, "status", tokenAuth)
-    val tipeSpinner = repository.getSpinnerData(appContext, "tipe", tokenAuth)
-    val fungsiSpinner = repository.getSpinnerData(appContext, "fungsi", tokenAuth)
+    var kecamatanSpinner = MutableLiveData<SpinnerResponse>()
+    var desaSpinner = MutableLiveData<SpinnerResponse>()
+    var statusSpinner = MutableLiveData<SpinnerResponse>()
+    var tipeSpinner = MutableLiveData<SpinnerResponse>()
+    var fungsiSpinner = MutableLiveData<SpinnerResponse>()
 
     fun getRuasJalan(limit: Int, page: Int) {
         repository.getRuasJalan(appContext, limit, page, "ruas_jalan", tokenAuth).observeForever {
@@ -33,9 +33,23 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         }
     }
 
+    fun getSpinnerData() {
+        fetchSpinnerData("kecamatan", kecamatanSpinner)
+        fetchSpinnerData("desa", desaSpinner)
+        fetchSpinnerData("status", statusSpinner)
+        fetchSpinnerData("tipe", tipeSpinner)
+        fetchSpinnerData("fungsi", fungsiSpinner)
+    }
+
     private var addRuasJalanRequest: RuasJalanRequest = RuasJalanRequest(
         0, "", "", "", "", "", "", "", "", emptyList(), emptyList()
     )
+
+    private fun fetchSpinnerData(spinnerType: String, spinnerLiveData: MutableLiveData<SpinnerResponse>) {
+        repository.getSpinnerData(appContext, spinnerType, tokenAuth).observeForever {
+            spinnerLiveData.postValue(it)
+        }
+    }
 
     fun setAddRuasJalanRequest(
         idRuasJalan: Int,
