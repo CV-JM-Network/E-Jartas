@@ -90,7 +90,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
         binding.btnEditItem.setOnClickListener {
             val intent = Intent(requireContext(), EditRuasJalanActivity::class.java)
-            intent.putExtra("idRuasJalan", ruasjalanData!!.idRuasJalan)
+            intent.putExtra("ruasJalanData", ruasjalanData)
             startActivity(intent)
             dismiss()
         }

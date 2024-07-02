@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.ItemRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
@@ -45,20 +44,20 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>() {
                 }
 
                 itemRuasJalan.setOnClickListener {
+                    val requestData = RuasJalanRequest(
+                        item.idRuasJalan,
+                        item.noRuas,
+                        item.namaRuasJalan,
+                        item.desa,
+                        item.kecamatan,
+                        item.panjang,
+                        item.status,
+                        item.tipe,
+                        item.fungsi,
+                        listOf(position),
+                        listOf()
+                    )
                     val bottomSheet = BottomSheetItemRuasJalan().apply {
-                        val requestData = RuasJalanRequest(
-                            item.idRuasJalan,
-                            item.noRuas,
-                            item.namaRuasJalan,
-                            item.desa,
-                            item.kecamatan,
-                            item.panjang,
-                            item.status,
-                            item.tipe,
-                            item.fungsi,
-                            listOf(position),
-                            listOf()
-                        )
                         arguments = Bundle().apply {
                             putParcelable("ruasjalanData", requestData)
                         }

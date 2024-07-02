@@ -42,11 +42,12 @@ data class RuasJalanRequest(
     @SerializedName("status") val status: String,
     @SerializedName("tipe") val tipe: String,
     @SerializedName("fungsi") val fungsi: String,
-    @SerializedName("latlong") val latLong: @RawValue List<Location>,
+    @SerializedName("latlong") val latLong: List<Location>,
     @SerializedName("additional") val additional: @RawValue List<JSONObject>
 ) : Parcelable
 
+@Parcelize
 data class Location(
     @SerializedName("lat") val lat: String,
     @SerializedName("lng") val lng: String
-)
+) : Parcelable

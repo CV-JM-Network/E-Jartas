@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -74,7 +75,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         binding.apply {
-            bindProgressButton(btnTambahRuasJalan)
+            bindProgressButton(btnRuasJalan)
             btnBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
@@ -134,7 +135,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             mapFragment.getMapAsync(this@AddRuasJalanActivity)
 
-            btnTambahRuasJalan.setOnClickListener {
+            btnRuasJalan.setOnClickListener {
                 val inputNoRuas = inputNomorRuasJalan.text.toString()
                 val inputNamaRuas = inputNamaRuasJalan.text.toString()
                 val inputPanjangRuas = inputPanjangRuasJalan.text.toString()
@@ -162,11 +163,12 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                     listOf(latlng),
                     emptyList()
                 )
-                btnTambahRuasJalan.attachTextChangeAnimator()
+                btnRuasJalan.attachTextChangeAnimator()
+                btnRuasJalan.showProgress()
 
                 if (validate != "") {
                     Toasty.error(this@AddRuasJalanActivity, validate, Toasty.LENGTH_SHORT).show()
-                    btnTambahRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
+                    btnRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                 } else {
                     viewModel.addRuasJalan { status, message ->
                         when (status) {
@@ -177,7 +179,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             else -> {
                                 Toasty.error(this@AddRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
-                                btnTambahRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
+                                btnRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                             }
                         }
                     }
@@ -251,7 +253,6 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 currentMarker?.remove()
                 latLng = marker.position
                 drawMarker()
-                Log.d("onMarkerDragEnd", "Lat: ${latLng?.latitude}, Long: ${latLng?.longitude}")
             }
         })
 
@@ -259,7 +260,6 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
             currentMarker?.remove()
             this.latLng = latLng
             drawMarker()
-            Log.d("onMapLongClick", "Lat: ${latLng.latitude}, Long: ${latLng.longitude}")
         }
 
         mMap.setOnMyLocationClickListener {
@@ -273,7 +273,6 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     // Draw a new marker on the map
                     drawMarker()
-                    Log.d("onMyLocationClick", "Lat: ${latLng?.latitude}, Long: ${latLng?.longitude}")
                 }
             }
         }

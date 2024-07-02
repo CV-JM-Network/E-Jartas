@@ -91,6 +91,12 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         }
     }
 
+    fun editRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
+        repository.editRuasJalan(appContext, idAdmin, idruas, addRuasJalanRequest, tokenAuth).observeForever {
+            callback(it.status, it.message)
+        }
+    }
+
     fun deleteRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
         repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever { it ->
             if (it.status == "success") {
