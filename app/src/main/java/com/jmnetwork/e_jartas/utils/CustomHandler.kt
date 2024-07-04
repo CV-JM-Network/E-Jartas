@@ -54,6 +54,16 @@ class CustomHandler {
                 crashlytics.recordException(Exception("Bad request, context: $ctx"))
             }
 
+            code == 401 -> {
+                Toasty.error(context, "Email atau password salah", Toasty.LENGTH_LONG).show()
+                crashlytics.recordException(Exception("Unauthorized, context: $ctx"))
+            }
+
+            code == 404 -> {
+                Toasty.error(context, "Data tidak ditemukan: $message", Toasty.LENGTH_LONG).show()
+                crashlytics.recordException(Exception("Data not found: $message, context: $ctx"))
+            }
+
             code == 500 -> {
                 Toasty.error(context, "Internal server error", Toasty.LENGTH_LONG).show()
                 crashlytics.recordException(Exception("Internal server error, context: $ctx"))

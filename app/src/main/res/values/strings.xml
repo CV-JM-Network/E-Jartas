@@ -54,4 +54,12 @@
     <string name="btn_edit_ruas_jalan">Edit Data</string>
     <string name="confirm_delete">Apakah Anda Yakin Ingin Menghapus Data Ini?</string>
     <string name="edit_ruas_jalan">Edit Ruas Jalan</string>
+    <string name="icon_provider">ikon tombol provider</string>
+    <string name="icon_titik_tiang">ikon tombol titik tiang</string>
+    <string name="titik_tiang">Titik Tiang</string>
+    <string name="alamat_provider">Alamat: %1$s</string>
+    <string name="jml_tiang">Jumlah Tiang: %1$d</string>
+    <string name="blacklist">Blacklist: %1$s</string>
+    <string name="informasi_tambahan">Informasi Tambahan</string>
+    <string name="informasi_tambahan_item">• %1$s: %2$s</string>
 </resources>

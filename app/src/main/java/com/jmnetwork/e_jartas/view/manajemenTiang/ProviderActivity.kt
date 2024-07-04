@@ -1,4 +1,4 @@
-package com.jmnetwork.e_jartas.view.manajemenJalan
+package com.jmnetwork.e_jartas.view.manajemenTiang
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,38 +9,35 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jmnetwork.e_jartas.databinding.ActivityRuasJalanBinding
-import com.jmnetwork.e_jartas.utils.MySharedPreferences
+import com.jmnetwork.e_jartas.databinding.ActivityProviderBinding
 import com.jmnetwork.e_jartas.view.MainActivity
-import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
+import com.jmnetwork.e_jartas.viewModel.ManajemenTiangViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 
-class RuasJalanActivity : AppCompatActivity() {
+class ProviderActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRuasJalanBinding
-    private lateinit var viewModel: ManajemenJalanViewModel
-    private lateinit var myPreferences: MySharedPreferences
-    private lateinit var adapter: RuasJalanAdapter
+    private lateinit var binding: ActivityProviderBinding
+    private lateinit var viewModel: ManajemenTiangViewModel
+    private lateinit var adapter: ProviderAdapter
 
     private var currentSearchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRuasJalanBinding.inflate(layoutInflater)
+        binding = ActivityProviderBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this@RuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
-        myPreferences = MySharedPreferences(this@RuasJalanActivity)
-        adapter = RuasJalanAdapter()
+        viewModel = ViewModelProvider(this@ProviderActivity, factory)[ManajemenTiangViewModel::class.java]
+        adapter = ProviderAdapter()
 
         var page = 1
-        val limit = 100
+        val limit = 10
         var totalPage = 0
 
-        onBackPressedDispatcher.addCallback(this@RuasJalanActivity, object : OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this@ProviderActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 startActivity(
-                    Intent(this@RuasJalanActivity, MainActivity::class.java).putExtra(MainActivity.EXTRA_FRAGMENT, "home")
+                    Intent(this@ProviderActivity, MainActivity::class.java).putExtra(MainActivity.EXTRA_FRAGMENT, "home")
                 )
                 finish()
             }
@@ -51,29 +48,24 @@ class RuasJalanActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
             }
 
-            btnTambahRuas.setOnClickListener {
-                startActivity(
-                    Intent(this@RuasJalanActivity, AddRuasJalanActivity::class.java)
-                        .putExtra(AddRuasJalanActivity.EXTRA_SOURCE_ACTIVITY, "ruas")
-                )
-            }
-
-            viewModel.getRuasJalan(limit, 1)
-            viewModel.ruasJalanData.observe(this@RuasJalanActivity) {
-                if (it != null) {
-                    adapter.setItem(it.data)
-                    progressBar.visibility = View.GONE
-                    totalPage = it.totalData.totalData.div(limit)
-                    totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
-                } else {
-                    adapter.setItem(emptyList())
+            viewModel.apply {
+                getProvider(limit, 1)
+                providerData.observe(this@ProviderActivity) {
+                    if (it != null) {
+                        adapter.setItem(it.data)
+                        progressBar.visibility = View.GONE
+                        totalPage = it.totalData.totalData.div(limit)
+                        totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
+                    } else {
+                        adapter.setItem(emptyList())
+                    }
                 }
             }
 
-            rvRuasJalan.apply {
-                layoutManager = LinearLayoutManager(this@RuasJalanActivity)
+            rvProvider.apply {
+                layoutManager = LinearLayoutManager(this@ProviderActivity)
                 setHasFixedSize(false)
-                adapter = this@RuasJalanActivity.adapter
+                adapter = this@ProviderActivity.adapter
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
@@ -84,8 +76,8 @@ class RuasJalanActivity : AppCompatActivity() {
                         if (lastVisibleItem == totalItemCount - 1 && page < totalPage) {
                             progressBar.visibility = View.VISIBLE
                             page += 1
-                            viewModel.getRuasJalan(limit, page)
-                            currentSearchQuery?.let { this@RuasJalanActivity.adapter.filter.filter(it) }
+                            viewModel.getProvider(limit, page)
+                            currentSearchQuery?.let { this@ProviderActivity.adapter.filter.filter(it) }
                         }
                     }
                 })

@@ -11,6 +11,7 @@ import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FragmentHomeBinding
 import com.jmnetwork.e_jartas.view.manajemenJalan.AddRuasJalanActivity
 import com.jmnetwork.e_jartas.view.manajemenJalan.RuasJalanActivity
+import com.jmnetwork.e_jartas.view.manajemenTiang.ProviderActivity
 import com.jmnetwork.e_jartas.viewModel.HomeViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import java.util.Locale
@@ -48,6 +49,13 @@ class HomeFragment : Fragment() {
                 activity?.startActivity(intent)
                 activity?.finish()
             }
+
+            btnProvider.setOnClickListener {
+                activity?.startActivity(Intent(requireContext(), ProviderActivity::class.java))
+                activity?.finish()
+            }
+
+            btnTitikTiang.setOnClickListener { }
         }
 
         return binding.root

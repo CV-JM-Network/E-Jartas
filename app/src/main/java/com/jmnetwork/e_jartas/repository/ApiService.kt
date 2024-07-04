@@ -4,10 +4,10 @@ import com.jmnetwork.e_jartas.model.DashboardResponse
 import com.jmnetwork.e_jartas.model.DefaultResponse
 import com.jmnetwork.e_jartas.model.LoginResponse
 import com.jmnetwork.e_jartas.model.LoginWebappResponse
-import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import com.jmnetwork.e_jartas.model.SpinnerResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.Field
@@ -54,12 +54,12 @@ interface ApiService {
     ): Call<DashboardResponse>
 
     @GET("get/data")
-    fun getRuasJalan(
+    fun getAllData(
         @Query("limit") limit: Int,
         @Query("current_page") page: Int,
         @Query("data_tabel") tabel: String,
         @Header("Authorization") authorization: String
-    ): Call<RuasJalanResponse>
+    ): Call<ResponseBody>
 
     @GET("get/varian/ruas_jalan")
     fun getSpinnerData(

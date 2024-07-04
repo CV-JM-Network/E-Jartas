@@ -28,7 +28,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     var fungsiSpinner = MutableLiveData<SpinnerResponse>()
 
     fun getRuasJalan(limit: Int, page: Int) {
-        repository.getRuasJalan(appContext, limit, page, "ruas_jalan", tokenAuth).observeForever {
+        repository.getRuasJalan(appContext, limit, page, tokenAuth).observeForever {
             ruasJalanData.postValue(it)
         }
     }

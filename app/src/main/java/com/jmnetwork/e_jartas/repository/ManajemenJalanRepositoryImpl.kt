@@ -9,6 +9,7 @@ import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import com.jmnetwork.e_jartas.model.SpinnerResponse
 import com.jmnetwork.e_jartas.utils.CustomHandler
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -23,18 +24,17 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
 
         apiService.getSpinnerData(varian, tokenAuth).enqueue(object : retrofit2.Callback<SpinnerResponse> {
             override fun onResponse(call: Call<SpinnerResponse>, response: Response<SpinnerResponse>) {
-                when (response.code()) {
-                    200 -> {
-                        spinnerData.postValue(response.body())
+                if (response.isSuccessful) {
+                    spinnerData.postValue(response.body())
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
                     }
-
-                    500 -> {
-                        CustomHandler().responseHandler(context, "getSpinnerData|onResponse", response.message(), 500)
-                    }
-
-                    else -> {
-                        CustomHandler().responseHandler(context, "getSpinnerData|onResponse", response.message(), response.code())
-                    }
+                    CustomHandler().responseHandler(context, "getSpinnerData|onResponse", errorMsg, response.code())
                 }
             }
 
@@ -47,28 +47,24 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
     }
 
     override fun getRuasJalan(
-        context: Context, limit: Int, page: Int, tabel: String, tokenAuth: String
+        context: Context, limit: Int, page: Int, tokenAuth: String
     ): LiveData<RuasJalanResponse> {
         val ruasJalanData = MutableLiveData<RuasJalanResponse>()
 
-        apiService.getRuasJalan(limit, page, tabel, tokenAuth).enqueue(object : retrofit2.Callback<RuasJalanResponse> {
-            override fun onResponse(call: Call<RuasJalanResponse>, response: Response<RuasJalanResponse>) {
-                when (response.code()) {
-                    200 -> {
-                        ruasJalanData.postValue(response.body())
-                    }
-
-                    500 -> {
-                        CustomHandler().responseHandler(context, "getRuasJalan|onResponse", response.message(), 500)
-                    }
-
-                    else -> {
-                        CustomHandler().responseHandler(context, "getRuasJalan|onResponse", response.message(), response.code())
-                    }
+        apiService.getAllData(limit, page, "ruas_jalan", tokenAuth).enqueue(object : retrofit2.Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val responseString = response.body()?.string()
+                    val data = Gson().fromJson(responseString, RuasJalanResponse::class.java)
+                    ruasJalanData.postValue(data)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") }!!
+                    CustomHandler().responseHandler(context, "getRuasJalan|onResponse", errorMsg, response.code())
                 }
             }
 
-            override fun onFailure(call: Call<RuasJalanResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 CustomHandler().responseHandler(context, "getRuasJalan|onFailure", t.message.toString())
             }
         })
@@ -84,25 +80,20 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
 
         apiService.ruasJalan("add", null, JSONObject(dataJson), idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                when (response.code()) {
-                    200 -> {
-                        result.postValue(DefaultResponse(response.body()!!.message, response.body()!!.status))
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
                     }
-
-                    400 -> {
-                        CustomHandler().responseHandler(context, "addRuasJalan|onResponse", response.message(), 400)
-                        result.postValue(DefaultResponse(response.message(), "bad_request"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
                     }
-
-                    500 -> {
-                        CustomHandler().responseHandler(context, "addRuasJalan|onResponse", response.message(), 500)
-                        result.postValue(DefaultResponse(response.message(), "internal_server_error"))
-                    }
-
-                    else -> {
-                        CustomHandler().responseHandler(context, "addRuasJalan|onResponse", response.message(), response.code())
-                        result.postValue(DefaultResponse(response.message(), "error"))
-                    }
+                    CustomHandler().responseHandler(context, "addRuasJalan|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
                 }
             }
 
@@ -123,25 +114,20 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
 
         apiService.ruasJalan("edit", iddata, JSONObject(dataJson), idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                when (response.code()) {
-                    200 -> {
-                        result.postValue(DefaultResponse(response.body()!!.message, response.body()!!.status))
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
                     }
-
-                    400 -> {
-                        CustomHandler().responseHandler(context, "editRuasJalan|onResponse", response.message(), 400)
-                        result.postValue(DefaultResponse(response.message(), "bad_request"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
                     }
-
-                    500 -> {
-                        CustomHandler().responseHandler(context, "editRuasJalan|onResponse", response.message(), 500)
-                        result.postValue(DefaultResponse(response.message(), "internal_server_error"))
-                    }
-
-                    else -> {
-                        CustomHandler().responseHandler(context, "editRuasJalan|onResponse", response.message(), response.code())
-                        result.postValue(DefaultResponse(response.message(), "error"))
-                    }
+                    CustomHandler().responseHandler(context, "editRuasJalan|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
                 }
             }
 
@@ -159,25 +145,20 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
 
         apiService.ruasJalan("delete", iddata, null, idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                when (response.code()) {
-                    200 -> {
-                        result.postValue(DefaultResponse(response.body()!!.message, response.body()!!.status))
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
                     }
-
-                    400 -> {
-                        CustomHandler().responseHandler(context, "deleteRuasJalan|onResponse", response.message(), 400)
-                        result.postValue(DefaultResponse(response.message(), "bad_request"))
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
                     }
-
-                    500 -> {
-                        CustomHandler().responseHandler(context, "deleteRuasJalan|onResponse", response.message(), 500)
-                        result.postValue(DefaultResponse(response.message(), "internal_server_error"))
-                    }
-
-                    else -> {
-                        CustomHandler().responseHandler(context, "deleteRuasJalan|onResponse", response.message(), response.code())
-                        result.postValue(DefaultResponse(response.message(), "error"))
-                    }
+                    CustomHandler().responseHandler(context, "deleteRuasJalan|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
                 }
             }
 
