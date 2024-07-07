@@ -51,8 +51,10 @@ class HomeFragment : Fragment() {
             }
 
             btnProvider.setOnClickListener {
-                activity?.startActivity(Intent(requireContext(), ProviderActivity::class.java))
-                activity?.finish()
+                activity?.startActivity(
+                    Intent(requireContext(), ProviderActivity::class.java)
+                        .putExtra(ProviderActivity.DESTINATION, "list")
+                )
             }
 
             btnTitikTiang.setOnClickListener { }
