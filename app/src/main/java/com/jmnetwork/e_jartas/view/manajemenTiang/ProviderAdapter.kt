@@ -29,8 +29,6 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
         this.list.addAll(item)
         this.listFiltered = ArrayList(this.list) // Make a copy of the original list
         notifyItemRangeChanged(prevSize, item.size)
-//        Log.d("Original", "count: ${list.size}; item: $list")
-//        Log.d("Filtered", "count: ${listFiltered.size}; item: $listFiltered")
     }
 
     class ItemHolder(private val binding: ItemProviderBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -42,6 +40,12 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
                 tvAlamatProvider.text = itemView.context.getString(R.string.alamat_provider, Utils().capitalizeFirstCharacter(item.alamat))
                 tvJmlTiang.text = itemView.context.getString(R.string.jml_tiang, item.jumlahKepemilikanTiang)
                 tvBlacklist.text = itemView.context.getString(R.string.blacklist, item.blackList)
+                if (item.blackList == "ya") {
+                    tvBlacklist.setTextColor(Color.RED)
+                } else {
+                    val colorRes = itemView.context.resources.getIdentifier("colorOnTertiaryContainer", "attr", itemView.context.packageName)
+                    tvBlacklist.setTextColor(Color.parseColor("#${Integer.toHexString(itemView.context.theme.obtainStyledAttributes(intArrayOf(colorRes)).getColor(0, Color.BLACK))}"))
+                }
 
                 if (item.additional != "[]") {
                     tvInformasiTambahan.visibility = View.VISIBLE
@@ -113,6 +117,7 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
         // Call the clearLinearLayout method when the view is recycled
         holder.clearLinearLayout()
     }
+
     override fun getItemCount(): Int = listFiltered.size // Return the size of the filtered list
 
     override fun getFilter(): Filter {

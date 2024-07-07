@@ -78,6 +78,21 @@ class ScanQrFragment : Fragment() {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        codeScanner.releaseResources()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        codeScanner.startPreview()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        codeScanner.releaseResources()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

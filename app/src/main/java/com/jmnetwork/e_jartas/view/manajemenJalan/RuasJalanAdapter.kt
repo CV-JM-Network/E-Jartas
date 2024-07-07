@@ -2,7 +2,6 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
