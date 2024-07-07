@@ -35,9 +35,6 @@
             android:name=".view.manajemenJalan.EditRuasJalanActivity"
             android:exported="false" />
         <activity
-            android:name=".view.manajemenJalan.AddRuasJalanActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.manajemenJalan.RuasJalanActivity"
             android:exported="false" />
         <activity

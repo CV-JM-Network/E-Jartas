@@ -1,4 +1,4 @@
-package com.jmnetwork.e_jartas.view.manajemenTiang
+package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,16 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jmnetwork.e_jartas.databinding.FragmentListProviderBinding
-import com.jmnetwork.e_jartas.viewModel.ManajemenTiangViewModel
+import com.jmnetwork.e_jartas.R
+import com.jmnetwork.e_jartas.databinding.FragmentListRuasJalanBinding
+import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 
-class ListProviderFragment : Fragment() {
+class ListRuasJalanFragment : Fragment() {
 
-    private var _binding: FragmentListProviderBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var viewModel: ManajemenTiangViewModel
-    private lateinit var adapter: ProviderAdapter
+    private lateinit var _binding: FragmentListRuasJalanBinding
+    private val binding get() = _binding
+    private lateinit var viewModel: ManajemenJalanViewModel
+    private lateinit var adapter: RuasJalanAdapter
 
     private var currentSearchQuery: String? = null
 
@@ -27,13 +28,13 @@ class ListProviderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListProviderBinding.inflate(inflater, container, false)
+        _binding = FragmentListRuasJalanBinding.inflate(inflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenTiangViewModel::class.java]
-        adapter = ProviderAdapter()
+        viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
+        adapter = RuasJalanAdapter()
 
         var page = 1
-        val limit = 10
+        val limit = 100
         var totalPage = 0
 
         binding.apply {
@@ -41,24 +42,29 @@ class ListProviderFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-            viewModel.apply {
-                getProvider(limit, 1)
-                providerData.observe(viewLifecycleOwner) {
-                    if (it != null) {
-                        adapter.setItem(it.data)
-                        progressBar.visibility = View.GONE
-                        totalPage = it.totalData.totalData.div(limit)
-                        totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
-                    } else {
-                        adapter.setItem(emptyList())
-                    }
+            btnTambahRuas.setOnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.ruas_jalan_fragment_container, AddRuasJalanFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+
+            viewModel.getRuasJalan(limit, 1)
+            viewModel.ruasJalanData.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    adapter.setItem(it.data)
+                    progressBar.visibility = View.GONE
+                    totalPage = it.totalData.totalData.div(limit)
+                    totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
+                } else {
+                    adapter.setItem(emptyList())
                 }
             }
 
-            rvProvider.apply {
+            rvRuasJalan.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(false)
-                adapter = this@ListProviderFragment.adapter
+                adapter = this@ListRuasJalanFragment.adapter
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
@@ -69,8 +75,8 @@ class ListProviderFragment : Fragment() {
                         if (lastVisibleItem == totalItemCount - 1 && page < totalPage) {
                             progressBar.visibility = View.VISIBLE
                             page += 1
-                            viewModel.getProvider(limit, page)
-                            currentSearchQuery?.let { this@ListProviderFragment.adapter.filter.filter(it) }
+                            viewModel.getRuasJalan(limit, page)
+                            currentSearchQuery?.let { this@ListRuasJalanFragment.adapter.filter.filter(it) }
                         }
                     }
                 })

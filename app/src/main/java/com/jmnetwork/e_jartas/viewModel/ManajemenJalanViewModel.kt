@@ -33,6 +33,10 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         }
     }
 
+    init {
+        getSpinnerData()
+    }
+
     fun getSpinnerData() {
         fetchSpinnerData("kecamatan", kecamatanSpinner)
         fetchSpinnerData("desa", desaSpinner)

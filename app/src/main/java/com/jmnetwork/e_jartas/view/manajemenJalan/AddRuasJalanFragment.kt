@@ -2,13 +2,16 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
@@ -27,60 +30,39 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FormRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
-import com.jmnetwork.e_jartas.utils.MySharedPreferences
-import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import es.dmoral.toasty.Toasty
 
-class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var binding: FormRuasJalanBinding
+class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
+
+    private lateinit var _binding: FormRuasJalanBinding
+    private val binding get() = _binding
     private lateinit var viewModel: ManajemenJalanViewModel
-    private lateinit var myPreferences: MySharedPreferences
     private lateinit var mMap: GoogleMap
     private lateinit var client: FusedLocationProviderClient
 
     private var latLng: LatLng? = null
     private var currentMarker: Marker? = null
 
-    companion object {
-        const val EXTRA_SOURCE_ACTIVITY = "extra_source_activity"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FormRuasJalanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val factory = ViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this@AddRuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
-        myPreferences = MySharedPreferences(this@AddRuasJalanActivity)
-        client = LocationServices.getFusedLocationProviderClient(this@AddRuasJalanActivity)
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                when (intent.getStringExtra(EXTRA_SOURCE_ACTIVITY)) {
-                    "ruas" -> {
-                        startActivity(Intent(this@AddRuasJalanActivity, RuasJalanActivity::class.java))
-                        finish()
-                    }
-
-                    else -> {
-                        startActivity(Intent(this@AddRuasJalanActivity, MainActivity::class.java).putExtra(MainActivity.EXTRA_FRAGMENT, "home"))
-                        finish()
-                    }
-                }
-            }
-        })
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FormRuasJalanBinding.inflate(inflater, container, false)
+        val factory = ViewModelFactory.getInstance(requireActivity().application)
+        viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
+        client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         binding.apply {
             bindProgressButton(btnRuasJalan)
             btnBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
             viewModel.getSpinnerData()
-            viewModel.kecamatanSpinner.observe(this@AddRuasJalanActivity) { response ->
+            viewModel.kecamatanSpinner.observe(viewLifecycleOwner) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {
                     listData.add(response.data[i].kecamatan)
@@ -89,7 +71,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 spinnerKecamatan.item = listData as List<String>?
             }
 
-            viewModel.desaSpinner.observe(this@AddRuasJalanActivity) { response ->
+            viewModel.desaSpinner.observe(viewLifecycleOwner) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {
                     listData.add(response.data[i].desa)
@@ -98,7 +80,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 spinnerDesa.item = listData as List<String>?
             }
 
-            viewModel.statusSpinner.observe(this@AddRuasJalanActivity) { response ->
+            viewModel.statusSpinner.observe(viewLifecycleOwner) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {
                     listData.add(response.data[i].status)
@@ -107,7 +89,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 spinnerStatus.item = listData as List<String>?
             }
 
-            viewModel.tipeSpinner.observe(this@AddRuasJalanActivity) { response ->
+            viewModel.tipeSpinner.observe(viewLifecycleOwner) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {
                     listData.add(response.data[i].tipe)
@@ -116,7 +98,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 spinnerTipe.item = listData as List<String>?
             }
 
-            viewModel.fungsiSpinner.observe(this@AddRuasJalanActivity) { response ->
+            viewModel.fungsiSpinner.observe(viewLifecycleOwner) { response ->
                 val listData = ArrayList<String>()
                 for (i in 0 until response.data.size) {
                     listData.add(response.data[i].fungsi)
@@ -127,13 +109,13 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
             val mapFragment = SupportMapFragment.newInstance()
             ruasJalanMapFrame.apply {
-                (this@AddRuasJalanActivity as AppCompatActivity).supportFragmentManager
+                (requireActivity()).supportFragmentManager
                     .beginTransaction()
                     .replace(id, mapFragment)
-                    .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commitNow()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit() // Use commit() instead of commitNow()
             }
-            mapFragment.getMapAsync(this@AddRuasJalanActivity)
+            mapFragment.getMapAsync(this@AddRuasJalanFragment)
 
             btnRuasJalan.setOnClickListener {
                 val inputNoRuas = inputNomorRuasJalan.text.toString()
@@ -167,18 +149,18 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 btnRuasJalan.showProgress()
 
                 if (validate != "") {
-                    Toasty.error(this@AddRuasJalanActivity, validate, Toasty.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), validate, Toasty.LENGTH_SHORT).show()
                     btnRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                 } else {
                     viewModel.addRuasJalan { status, message ->
                         when (status) {
                             "success" -> {
-                                Toasty.success(this@AddRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
-                                onBackPressedDispatcher.onBackPressed()
+                                Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
 
                             else -> {
-                                Toasty.error(this@AddRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
+                                Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
                                 btnRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                             }
                         }
@@ -186,6 +168,18 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().supportFragmentManager.popBackStack()
+                requireActivity().finish()
+            }
+        })
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -193,7 +187,7 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Get the fragment view of the Google Map
-        val fragmentView = (supportFragmentManager.findFragmentById(R.id.ruas_jalan_map_frame) as SupportMapFragment).view
+        val fragmentView = childFragmentManager.findFragmentById(R.id.ruas_jalan_map_frame)?.view
 
         // Set an OnTouchListener on the fragment view
         fragmentView?.setOnTouchListener { v, event ->
@@ -213,13 +207,13 @@ class AddRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
             )
             return
         }

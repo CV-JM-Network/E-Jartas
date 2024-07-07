@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FragmentHomeBinding
-import com.jmnetwork.e_jartas.view.manajemenJalan.AddRuasJalanActivity
 import com.jmnetwork.e_jartas.view.manajemenJalan.RuasJalanActivity
 import com.jmnetwork.e_jartas.view.manajemenTiang.ProviderActivity
 import com.jmnetwork.e_jartas.viewModel.HomeViewModel
@@ -39,15 +38,17 @@ class HomeFragment : Fragment() {
             }
 
             btnRuasJalan.setOnClickListener {
-                activity?.startActivity(Intent(requireContext(), RuasJalanActivity::class.java))
-                activity?.finish()
+                activity?.startActivity(
+                    Intent(requireContext(), RuasJalanActivity::class.java)
+                        .putExtra(RuasJalanActivity.DESTINATION, "list")
+                )
             }
 
             btnTambahJalan.setOnClickListener {
-                val intent = Intent(requireContext(), AddRuasJalanActivity::class.java)
-                intent.putExtra(AddRuasJalanActivity.EXTRA_SOURCE_ACTIVITY, "home")
-                activity?.startActivity(intent)
-                activity?.finish()
+                activity?.startActivity(
+                    Intent(requireContext(), RuasJalanActivity::class.java)
+                        .putExtra(RuasJalanActivity.DESTINATION, "add")
+                )
             }
 
             btnProvider.setOnClickListener {

@@ -1,17 +1,11 @@
 package com.jmnetwork.e_jartas.view.manajemenJalan
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.ActivityRuasJalanBinding
-import com.jmnetwork.e_jartas.utils.MySharedPreferences
-import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 
@@ -19,10 +13,10 @@ class RuasJalanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRuasJalanBinding
     private lateinit var viewModel: ManajemenJalanViewModel
-    private lateinit var myPreferences: MySharedPreferences
-    private lateinit var adapter: RuasJalanAdapter
 
-    private var currentSearchQuery: String? = null
+    companion object {
+        const val DESTINATION = "destination"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,81 +24,25 @@ class RuasJalanActivity : AppCompatActivity() {
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this@RuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
-        myPreferences = MySharedPreferences(this@RuasJalanActivity)
-        adapter = RuasJalanAdapter()
 
-        var page = 1
-        val limit = 100
-        var totalPage = 0
-
-        onBackPressedDispatcher.addCallback(this@RuasJalanActivity, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                startActivity(
-                    Intent(this@RuasJalanActivity, MainActivity::class.java).putExtra(MainActivity.EXTRA_FRAGMENT, "home")
-                )
-                finish()
-            }
-        })
-
-        binding.apply {
-            btnBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-            }
-
-            btnTambahRuas.setOnClickListener {
-                startActivity(
-                    Intent(this@RuasJalanActivity, AddRuasJalanActivity::class.java)
-                        .putExtra(AddRuasJalanActivity.EXTRA_SOURCE_ACTIVITY, "ruas")
-                )
-            }
-
-            viewModel.getRuasJalan(limit, 1)
-            viewModel.ruasJalanData.observe(this@RuasJalanActivity) {
-                if (it != null) {
-                    adapter.setItem(it.data)
-                    progressBar.visibility = View.GONE
-                    totalPage = it.totalData.totalData.div(limit)
-                    totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
-                } else {
-                    adapter.setItem(emptyList())
-                }
-            }
-
-            rvRuasJalan.apply {
-                layoutManager = LinearLayoutManager(this@RuasJalanActivity)
-                setHasFixedSize(false)
-                adapter = this@RuasJalanActivity.adapter
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                        val totalItemCount = layoutManager.itemCount
-
-                        if (lastVisibleItem == totalItemCount - 1 && page < totalPage) {
-                            progressBar.visibility = View.VISIBLE
-                            page += 1
-                            viewModel.getRuasJalan(limit, page)
-                            currentSearchQuery?.let { this@RuasJalanActivity.adapter.filter.filter(it) }
-                        }
-                    }
-                })
-            }
-
-            searchView.setOnClickListener {
-                searchView.isIconified = false
-            }
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
+        if (intent.hasExtra(DESTINATION)) {
+            when (intent.getStringExtra(DESTINATION)) {
+                "list" -> {
+                    loadFragment(ListRuasJalanFragment())
                 }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    currentSearchQuery = newText
-                    adapter.filter.filter(newText)
-                    return false
+                "add" -> {
+                    loadFragment(AddRuasJalanFragment())
                 }
-            })
+            }
+        } else {
+            loadFragment(ListRuasJalanFragment())
         }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.ruas_jalan_fragment_container, fragment)
+            .commit()
     }
 }
