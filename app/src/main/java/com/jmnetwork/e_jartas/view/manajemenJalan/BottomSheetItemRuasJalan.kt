@@ -2,6 +2,7 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +33,12 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
     private var ruasjalanData: RuasJalanData? = null
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = BottomSheetRuasDetailBinding.inflate(inflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity().application)
         viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
 
@@ -43,14 +47,6 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
                 viewModel.ruasJalanData.value?.data?.find { it.idRuasJalan == idRuasJalan }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = BottomSheetRuasDetailBinding.inflate(inflater, container, false)
 
         mapView = binding.ruasDetilMap
         mapView.onCreate(savedInstanceState)
@@ -71,7 +67,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
                         when (status) {
                             "success" -> {
                                 Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
-//                                removeRuasJalanById(idRuasJalan)
+//                                removeRuasJalanById(ruasjalanData!!.idRuasJalan)
                                 dismiss()
                             }
 
@@ -104,7 +100,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
 //    private fun removeRuasJalanById(idruasJalan: Int) {
 //        val currentList = viewModel.ruasJalanData.value?.data?.toMutableList()
-//        val itemToRemove = currentList?.find { it.idruasJalan == idruasJalan }
+//        val itemToRemove = currentList?.find { it.idRuasJalan == idruasJalan }
 //        if (itemToRemove != null) {
 //            currentList.remove(itemToRemove)
 //            viewModel.ruasJalanData.value = viewModel.ruasJalanData.value?.copy(data = currentList)
@@ -134,25 +130,4 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
             binding.ruasDetilMap.visibility = View.GONE
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
-    }
-
-    override fun onPause() {
-        mapView.onPause()
-        super.onPause()
-    }
-
 }

@@ -219,7 +219,8 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().supportFragmentManager.popBackStack()
+                // TODO: Implement the back button action properly
+//                requireActivity().supportFragmentManager.popBackStack()
                 requireActivity().finish()
             }
         })

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.ItemRuasJalanBinding

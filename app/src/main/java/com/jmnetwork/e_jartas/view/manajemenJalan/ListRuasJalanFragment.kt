@@ -45,7 +45,7 @@ class ListRuasJalanFragment : Fragment() {
             btnTambahRuas.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.ruas_jalan_fragment_container, AddRuasJalanFragment())
-                    .addToBackStack(null)
+                    .addToBackStack("AddRuasJalanFragment")
                     .commit()
             }
 
@@ -105,7 +105,8 @@ class ListRuasJalanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().supportFragmentManager.popBackStack()
+                // TODO: Implement the back button action properly
+//                requireActivity().supportFragmentManager.popBackStack()
                 requireActivity().finish()
             }
         })

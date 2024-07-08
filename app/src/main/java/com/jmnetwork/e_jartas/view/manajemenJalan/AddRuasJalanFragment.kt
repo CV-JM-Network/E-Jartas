@@ -34,7 +34,6 @@ import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import es.dmoral.toasty.Toasty
 
-
 class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var _binding: FormRuasJalanBinding
@@ -176,7 +175,8 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().supportFragmentManager.popBackStack()
+                // TODO: Implement the back button action properly
+//                requireActivity().supportFragmentManager.popBackStack()
                 requireActivity().finish()
             }
         })
