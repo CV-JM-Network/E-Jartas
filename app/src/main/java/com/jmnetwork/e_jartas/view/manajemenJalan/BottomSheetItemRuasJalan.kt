@@ -91,6 +91,8 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.ruas_jalan_fragment_container, editRuasJalanFragment)
+                .addToBackStack("EditRuasJalanFragment")
+                .setReorderingAllowed(true)
                 .commit()
             dismiss()
         }

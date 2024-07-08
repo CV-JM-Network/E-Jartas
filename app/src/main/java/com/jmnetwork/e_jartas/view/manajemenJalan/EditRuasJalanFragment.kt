@@ -2,6 +2,7 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ import com.jmnetwork.e_jartas.databinding.FormRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.utils.CustomHandler
 import com.jmnetwork.e_jartas.utils.Utils
+import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import es.dmoral.toasty.Toasty
@@ -220,8 +222,13 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // TODO: Implement the back button action properly
-//                requireActivity().supportFragmentManager.popBackStack()
-                requireActivity().finish()
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }//                requireActivity().finish()
             }
         })
     }

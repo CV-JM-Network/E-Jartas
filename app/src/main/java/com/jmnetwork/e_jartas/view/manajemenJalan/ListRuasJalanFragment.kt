@@ -1,5 +1,6 @@
 package com.jmnetwork.e_jartas.view.manajemenJalan
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FragmentListRuasJalanBinding
+import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 
@@ -45,6 +47,7 @@ class ListRuasJalanFragment : Fragment() {
             btnTambahRuas.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.ruas_jalan_fragment_container, AddRuasJalanFragment())
+                    .setReorderingAllowed(true)
                     .addToBackStack("AddRuasJalanFragment")
                     .commit()
             }
@@ -105,9 +108,14 @@ class ListRuasJalanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // TODO: Implement the back button action properly
-//                requireActivity().supportFragmentManager.popBackStack()
-                requireActivity().finish()
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            //                requireActivity().finish()
             }
         })
     }

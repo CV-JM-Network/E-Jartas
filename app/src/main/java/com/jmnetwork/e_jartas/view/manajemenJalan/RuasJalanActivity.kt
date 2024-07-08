@@ -42,7 +42,9 @@ class RuasJalanActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
             .replace(R.id.ruas_jalan_fragment_container, fragment)
+            .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
     }
 }
