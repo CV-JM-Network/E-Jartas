@@ -113,7 +113,7 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
                     .beginTransaction()
                     .replace(id, mapFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit() // Use commit() instead of commitNow()
+                    .commit()
             }
             mapFragment.getMapAsync(this@AddRuasJalanFragment)
 

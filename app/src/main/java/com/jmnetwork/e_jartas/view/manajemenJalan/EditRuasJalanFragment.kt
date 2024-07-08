@@ -2,13 +2,15 @@ package com.jmnetwork.e_jartas.view.manajemenJalan
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
@@ -27,43 +29,40 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FormRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
-import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.utils.CustomHandler
-import com.jmnetwork.e_jartas.utils.MySharedPreferences
+import com.jmnetwork.e_jartas.utils.Utils
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import es.dmoral.toasty.Toasty
 
-@Suppress("DEPRECATION")
-class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var binding: FormRuasJalanBinding
+class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
+
+    private lateinit var _binding: FormRuasJalanBinding
+    private val binding get() = _binding
     private lateinit var viewModel: ManajemenJalanViewModel
-    private lateinit var myPreferences: MySharedPreferences
     private lateinit var mMap: GoogleMap
     private lateinit var client: FusedLocationProviderClient
 
     private var latLng: LatLng? = null
     private var currentMarker: Marker? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FormRuasJalanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val factory = ViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this@EditRuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
-        myPreferences = MySharedPreferences(this@EditRuasJalanActivity)
-        client = LocationServices.getFusedLocationProviderClient(this@EditRuasJalanActivity)
+    companion object {
+        const val ID_RUAS_JALAN = "id_ruas_jalan"
+    }
 
-        val ruasJalanData = intent.getParcelableExtra<RuasJalanRequest>("ruasJalanData")
-        val idRuasJalan = ruasJalanData?.idRuasJalan
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FormRuasJalanBinding.inflate(inflater, container, false)
+        val factory = ViewModelFactory.getInstance(requireActivity().application)
+        viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
+        client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                startActivity(Intent(this@EditRuasJalanActivity, RuasJalanActivity::class.java))
-                finish()
-            }
-        })
+        val idRuasJalan = requireArguments().getInt(ID_RUAS_JALAN)
+        val ruasJalanDatas = viewModel.ruasJalanData.value?.data
+        val ruasJalanData = ruasJalanDatas?.find { it.idRuasJalan == idRuasJalan }
 
         binding.apply {
             bindProgressButton(btnRuasJalan)
@@ -71,94 +70,92 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
             btnRuasJalan.text = getString(R.string.edit_ruas_jalan)
 
             viewModel.apply {
-                getSpinnerData()
-                if (idRuasJalan != -1) {
-                    if (ruasJalanData != null) {
-                        if (ruasJalanData.latLong[0].lat != "" && ruasJalanData.latLong[0].lng != "") {
-                            latLng = LatLng(ruasJalanData.latLong[0].lat.toDouble(), ruasJalanData.latLong[0].lng.toDouble())
-                        }
-                        inputNomorRuasJalan.setText(ruasJalanData.noRuas)
-                        inputNamaRuasJalan.setText(ruasJalanData.namaRuasJalan)
-                        inputPanjangRuasJalan.setText(ruasJalanData.panjang)
-
-                        kecamatanSpinner.observe(this@EditRuasJalanActivity) { response ->
-                            val listData = ArrayList<String>()
-                            for (i in 0 until response.data.size) {
-                                if (response.data[i].kecamatan != ruasJalanData.kecamatan) {
-                                    listData.add(response.data[i].kecamatan)
-                                }
-                            }
-                            listData.sort()
-                            listData.add(0, ruasJalanData.kecamatan) // Add the selected kecamatan to the first index
-                            spinnerKecamatan.item = listData as List<String>?
-                            spinnerKecamatan.setSelection(0)
-                        }
-
-                        desaSpinner.observe(this@EditRuasJalanActivity) { response ->
-                            val listData = ArrayList<String>()
-                            for (i in 0 until response.data.size) {
-                                if (response.data[i].desa != ruasJalanData.desa) {
-                                    listData.add(response.data[i].desa)
-                                }
-                            }
-                            listData.sort()
-                            listData.add(0, ruasJalanData.desa) // Add the selected desa to the first index
-                            spinnerDesa.item = listData as List<String>?
-                            spinnerDesa.setSelection(0)
-                        }
-
-                        tipeSpinner.observe(this@EditRuasJalanActivity) { response ->
-                            val listData = ArrayList<String>()
-                            for (i in 0 until response.data.size) {
-                                if (response.data[i].tipe != ruasJalanData.tipe) {
-                                    listData.add(response.data[i].tipe)
-                                }
-                            }
-                            listData.sort()
-                            listData.add(0, ruasJalanData.tipe) // Add the selected tipe to the first index
-                            spinnerTipe.item = listData as List<String>?
-                            spinnerTipe.setSelection(0)
-                        }
-
-                        fungsiSpinner.observe(this@EditRuasJalanActivity) { response ->
-                            val listData = ArrayList<String>()
-                            for (i in 0 until response.data.size) {
-                                if (response.data[i].fungsi != ruasJalanData.fungsi) {
-                                    listData.add(response.data[i].fungsi)
-                                }
-                            }
-                            listData.sort()
-                            listData.add(0, ruasJalanData.fungsi) // Add the selected fungsi to the first index
-                            spinnerFungsi.item = listData as List<String>?
-                            spinnerFungsi.setSelection(0)
-                        }
-
-                        statusSpinner.observe(this@EditRuasJalanActivity) { response ->
-                            val listData = ArrayList<String>()
-                            for (i in 0 until response.data.size) {
-                                if (response.data[i].status != ruasJalanData.status) {
-                                    listData.add(response.data[i].status)
-                                }
-                            }
-                            listData.sort()
-                            listData.add(0, ruasJalanData.status) // Add the selected status to the first index
-                            spinnerStatus.item = listData as List<String>?
-                            spinnerStatus.setSelection(0)
-                        }
-
-                        val mapFragment = SupportMapFragment.newInstance()
-                        ruasJalanMapFrame.apply {
-                            (this@EditRuasJalanActivity as AppCompatActivity).supportFragmentManager
-                                .beginTransaction()
-                                .replace(id, mapFragment)
-                                .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                .commitNow()
-                        }
-                        mapFragment.getMapAsync(this@EditRuasJalanActivity)
+                if (ruasJalanData != null) {
+                    if (ruasJalanData.latLong != null) {
+                        latLng = Utils().latLongConverter(ruasJalanData.latLong)
                     }
+
+                    inputNomorRuasJalan.setText(ruasJalanData.noRuas)
+                    inputNamaRuasJalan.setText(ruasJalanData.namaRuasJalan)
+                    inputPanjangRuasJalan.setText(ruasJalanData.panjang)
+
+                    kecamatanSpinner.observe(viewLifecycleOwner) { response ->
+                        val listData = ArrayList<String>()
+                        for (i in 0 until response.data.size) {
+                            if (response.data[i].kecamatan != ruasJalanData.kecamatan) {
+                                listData.add(response.data[i].kecamatan)
+                            }
+                        }
+                        listData.sort()
+                        listData.add(0, ruasJalanData.kecamatan) // Add the selected kecamatan to the first index
+                        spinnerKecamatan.item = listData as List<String>?
+                        spinnerKecamatan.setSelection(0)
+                    }
+
+                    desaSpinner.observe(viewLifecycleOwner) { response ->
+                        val listData = ArrayList<String>()
+                        for (i in 0 until response.data.size) {
+                            if (response.data[i].desa != ruasJalanData.desa) {
+                                listData.add(response.data[i].desa)
+                            }
+                        }
+                        listData.sort()
+                        listData.add(0, ruasJalanData.desa) // Add the selected desa to the first index
+                        spinnerDesa.item = listData as List<String>?
+                        spinnerDesa.setSelection(0)
+                    }
+
+                    tipeSpinner.observe(viewLifecycleOwner) { response ->
+                        val listData = ArrayList<String>()
+                        for (i in 0 until response.data.size) {
+                            if (response.data[i].tipe != ruasJalanData.tipe) {
+                                listData.add(response.data[i].tipe)
+                            }
+                        }
+                        listData.sort()
+                        listData.add(0, ruasJalanData.tipe) // Add the selected tipe to the first index
+                        spinnerTipe.item = listData as List<String>?
+                        spinnerTipe.setSelection(0)
+                    }
+
+                    fungsiSpinner.observe(viewLifecycleOwner) { response ->
+                        val listData = ArrayList<String>()
+                        for (i in 0 until response.data.size) {
+                            if (response.data[i].fungsi != ruasJalanData.fungsi) {
+                                listData.add(response.data[i].fungsi)
+                            }
+                        }
+                        listData.sort()
+                        listData.add(0, ruasJalanData.fungsi) // Add the selected fungsi to the first index
+                        spinnerFungsi.item = listData as List<String>?
+                        spinnerFungsi.setSelection(0)
+                    }
+
+                    statusSpinner.observe(viewLifecycleOwner) { response ->
+                        val listData = ArrayList<String>()
+                        for (i in 0 until response.data.size) {
+                            if (response.data[i].status != ruasJalanData.status) {
+                                listData.add(response.data[i].status)
+                            }
+                        }
+                        listData.sort()
+                        listData.add(0, ruasJalanData.status) // Add the selected status to the first index
+                        spinnerStatus.item = listData as List<String>?
+                        spinnerStatus.setSelection(0)
+                    }
+
+                    val mapFragment = SupportMapFragment.newInstance()
+                    ruasJalanMapFrame.apply {
+                        (requireActivity()).supportFragmentManager
+                            .beginTransaction()
+                            .replace(id, mapFragment)
+                            .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .commit()
+                    }
+                    mapFragment.getMapAsync(this@EditRuasJalanFragment)
                 } else {
-                    Toasty.error(this@EditRuasJalanActivity, "Data tidak ditemukan").show()
-                    CustomHandler().responseHandler(this@EditRuasJalanActivity, "EditRuasJalanActivity", "Data tidak ditemukan")
+                    Toasty.error(requireContext(), "Data tidak ditemukan").show()
+                    CustomHandler().responseHandler(requireContext(), "EditRuasJalanFragment", "Data tidak ditemukan")
                 }
             }
 
@@ -178,7 +175,7 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
 
                 val validate = viewModel.setAddRuasJalanRequest(
-                    idRuasJalan!!,
+                    idRuasJalan,
                     inputNoRuas,
                     inputNamaRuas,
                     inputDesa,
@@ -194,18 +191,18 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
                 btnRuasJalan.showProgress()
 
                 if (validate != "") {
-                    Toasty.error(this@EditRuasJalanActivity, validate, Toasty.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), validate, Toasty.LENGTH_SHORT).show()
                     btnRuasJalan.hideProgress(R.string.edit_ruas_jalan)
                 } else {
                     viewModel.editRuasJalan(idRuasJalan) { status, message ->
                         when (status) {
                             "success" -> {
-                                Toasty.success(this@EditRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
-                                onBackPressedDispatcher.onBackPressed()
+                                Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
 
                             else -> {
-                                Toasty.error(this@EditRuasJalanActivity, message, Toasty.LENGTH_SHORT).show()
+                                Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
                                 btnRuasJalan.hideProgress(R.string.tambah_ruas_jalan)
                             }
                         }
@@ -214,6 +211,18 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().supportFragmentManager.popBackStack()
+                requireActivity().finish()
+            }
+        })
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -221,7 +230,7 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Get the fragment view of the Google Map
-        val fragmentView = (supportFragmentManager.findFragmentById(R.id.ruas_jalan_map_frame) as SupportMapFragment).view
+        val fragmentView = childFragmentManager.findFragmentById(R.id.ruas_jalan_map_frame)?.view
 
         // Set an OnTouchListener on the fragment view
         fragmentView?.setOnTouchListener { v, event ->
@@ -241,13 +250,13 @@ class EditRuasJalanActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
             )
             return
         }

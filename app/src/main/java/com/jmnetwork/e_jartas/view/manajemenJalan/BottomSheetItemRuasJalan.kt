@@ -1,9 +1,7 @@
 package com.jmnetwork.e_jartas.view.manajemenJalan
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +11,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.BottomSheetRuasDetailBinding
-import com.jmnetwork.e_jartas.model.RuasJalanRequest
+import com.jmnetwork.e_jartas.model.RuasJalanData
+import com.jmnetwork.e_jartas.utils.Utils
+import com.jmnetwork.e_jartas.view.manajemenJalan.EditRuasJalanFragment.Companion.ID_RUAS_JALAN
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
@@ -31,19 +30,18 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
     private lateinit var mMap: GoogleMap
     private lateinit var mapView: MapView
 
-    private var ruasjalanData: RuasJalanRequest? = null
+    private var ruasjalanData: RuasJalanData? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory.getInstance(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory)[ManajemenJalanViewModel::class.java]
-        viewModel.ruasJalanData.observe(this) {
-            Log.d("ruasJalanData|BottomSheet1", it.toString())
-        }
+        viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
 
-        arguments?.let {
-            ruasjalanData = it.getParcelable("ruasjalanData", RuasJalanRequest::class.java)
+        arguments?.let { it ->
+            ruasjalanData = it.getInt("idRuasJalan").let { idRuasJalan ->
+                viewModel.ruasJalanData.value?.data?.find { it.idRuasJalan == idRuasJalan }
+            }
         }
     }
 
@@ -89,9 +87,15 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
         }
 
         binding.btnEditItem.setOnClickListener {
-            val intent = Intent(requireContext(), EditRuasJalanActivity::class.java)
-            intent.putExtra("ruasJalanData", ruasjalanData)
-            startActivity(intent)
+            val editRuasJalanFragment = EditRuasJalanFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ID_RUAS_JALAN, ruasjalanData!!.idRuasJalan)
+                }
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.ruas_jalan_fragment_container, editRuasJalanFragment)
+                .commit()
             dismiss()
         }
 
@@ -109,17 +113,9 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val latLng: LatLng? = ruasjalanData?.latLong?.getOrNull(0)?.let {
-            val lat = it.lat.toDoubleOrNull()
-            val lng = it.lng.toDoubleOrNull()
-            if (lat != null && lng != null) {
-                LatLng(lat, lng)
-            } else {
-                null
-            }
-        }
+        val location = Utils().latLongConverter(ruasjalanData?.latLong ?: "")
 
-        latLng?.let { location ->
+        if (location != null) {
             binding.ruasDetilMap.visibility = View.VISIBLE
             with(mMap) {
                 uiSettings.apply {
@@ -134,7 +130,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
                     .draggable(false)
                 addMarker(markerOptions)?.showInfoWindow()
             }
-        } ?: run {
+        } else {
             binding.ruasDetilMap.visibility = View.GONE
         }
     }
