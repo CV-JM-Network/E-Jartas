@@ -1,6 +1,5 @@
 package com.jmnetwork.e_jartas.model
 
-
 import com.google.gson.annotations.SerializedName
 
 data class ProviderResponse(

@@ -24,6 +24,7 @@ class ProviderActivity : AppCompatActivity() {
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(this@ProviderActivity.application)
         viewModel = ViewModelProvider(this@ProviderActivity, factory)[ManajemenTiangViewModel::class.java]
+        viewModel.getProvider(10, 1) // Get Provider data from API
 
         if (intent.hasExtra(DESTINATION)) {
             when (intent.getStringExtra(DESTINATION)) {

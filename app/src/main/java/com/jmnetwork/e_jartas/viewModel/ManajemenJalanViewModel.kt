@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.Location
+import com.jmnetwork.e_jartas.model.RuasJalanData
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
-import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import com.jmnetwork.e_jartas.model.SpinnerResponse
 import com.jmnetwork.e_jartas.repository.ManajemenJalanRepositoryImpl
 import com.jmnetwork.e_jartas.utils.Constants
@@ -20,7 +20,8 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     private val tokenAuth = myPreferences.getValue(Constants.TOKEN_AUTH).toString()
     private val idAdmin = myPreferences.getValueInteger(Constants.USER_IDADMIN)
 
-    val ruasJalanData: MutableLiveData<RuasJalanResponse> = MutableLiveData()
+    val ruasJalanData: MutableLiveData<Map<Int, RuasJalanData>> = MutableLiveData(mapOf())
+    val totalData: MutableLiveData<Int> = MutableLiveData(0)
     var kecamatanSpinner = MutableLiveData<SpinnerResponse>()
     var desaSpinner = MutableLiveData<SpinnerResponse>()
     var statusSpinner = MutableLiveData<SpinnerResponse>()
@@ -29,7 +30,17 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
 
     fun getRuasJalan(limit: Int, page: Int) {
         repository.getRuasJalan(appContext, limit, page, tokenAuth).observeForever {
-            ruasJalanData.postValue(it)
+            totalData.postValue(it.totalData.totalData)
+            val currentData = ruasJalanData.value?.toMutableMap() ?: mutableMapOf()
+            val updatedData = currentData.toMutableMap()
+
+            it.data.forEach { data ->
+                if (updatedData[data.idRuasJalan] == null) {
+                    updatedData[data.idRuasJalan] = data
+                }
+            }
+
+            ruasJalanData.postValue(updatedData)
         }
     }
 
@@ -120,12 +131,11 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
             if (it.status == "success") {
                 // Use Transformations.map to create a new LiveData with the updated list
                 ruasJalanData.value?.let { currentData ->
-                    val updatedList = currentData.data.toMutableList().let { mutableList ->
-                        val dataToRemove = mutableList.find { it.idRuasJalan == idruas }
-                        mutableList.remove(dataToRemove)
-                        mutableList.toList() // Convert back to immutable list
+                    val updatedData = currentData.toMutableMap().let { mutableMap ->
+                        mutableMap.remove(idruas)
+                        mutableMap.toMap() // Convert back to immutable map
                     }
-                    ruasJalanData.value = updatedList.let { it1 -> currentData.copy(data = it1) }
+                    ruasJalanData.value = updatedData
                 }
             }
             callback(it.status, it.message)

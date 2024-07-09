@@ -44,7 +44,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
         arguments?.let { it ->
             ruasjalanData = it.getInt("idRuasJalan").let { idRuasJalan ->
-                viewModel.ruasJalanData.value?.data?.find { it.idRuasJalan == idRuasJalan }
+                viewModel.ruasJalanData.value?.values?.find { it.idRuasJalan == idRuasJalan }
             }
         }
 
@@ -67,7 +67,6 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
                         when (status) {
                             "success" -> {
                                 Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
-//                                removeRuasJalanById(ruasjalanData!!.idRuasJalan)
                                 dismiss()
                             }
 
@@ -99,15 +98,6 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
         return binding.root
     }
-
-//    private fun removeRuasJalanById(idruasJalan: Int) {
-//        val currentList = viewModel.ruasJalanData.value?.data?.toMutableList()
-//        val itemToRemove = currentList?.find { it.idRuasJalan == idruasJalan }
-//        if (itemToRemove != null) {
-//            currentList.remove(itemToRemove)
-//            viewModel.ruasJalanData.value = viewModel.ruasJalanData.value?.copy(data = currentList)
-//        }
-//    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap

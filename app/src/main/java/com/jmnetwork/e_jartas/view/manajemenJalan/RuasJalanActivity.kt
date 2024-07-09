@@ -24,6 +24,7 @@ class RuasJalanActivity : AppCompatActivity() {
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this@RuasJalanActivity, factory)[ManajemenJalanViewModel::class.java]
+        viewModel.getRuasJalan(100, 1) // Get Ruas Jalan data from API
 
         if (intent.hasExtra(DESTINATION)) {
             when (intent.getStringExtra(DESTINATION)) {

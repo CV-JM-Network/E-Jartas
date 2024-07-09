@@ -63,8 +63,8 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
         client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val idRuasJalan = requireArguments().getInt(ID_RUAS_JALAN)
-        val ruasJalanDatas = viewModel.ruasJalanData.value?.data
-        val ruasJalanData = ruasJalanDatas?.find { it.idRuasJalan == idRuasJalan }
+        val ruasJalanDatas = viewModel.ruasJalanData.value
+        val ruasJalanData = ruasJalanDatas?.values?.find { it.idRuasJalan == idRuasJalan }
 
         binding.apply {
             bindProgressButton(btnRuasJalan)

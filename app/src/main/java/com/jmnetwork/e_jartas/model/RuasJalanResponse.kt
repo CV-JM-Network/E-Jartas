@@ -1,6 +1,5 @@
 package com.jmnetwork.e_jartas.model
 
-
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -8,7 +7,10 @@ import kotlinx.parcelize.RawValue
 import org.json.JSONObject
 
 data class RuasJalanResponse(
+    @SerializedName("current_page") val currentPage: String,
     @SerializedName("data") val data: List<RuasJalanData>,
+    @SerializedName("data_tabel") val dataTabel: String,
+    @SerializedName("limit") val limit: String,
     @SerializedName("message") val message: String,
     @SerializedName("status") val status: String,
     @SerializedName("totalData") val totalData: TotalData

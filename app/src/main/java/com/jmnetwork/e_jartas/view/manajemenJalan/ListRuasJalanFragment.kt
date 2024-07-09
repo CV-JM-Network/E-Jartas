@@ -52,13 +52,12 @@ class ListRuasJalanFragment : Fragment() {
                     .commit()
             }
 
-            viewModel.getRuasJalan(limit, 1)
             viewModel.ruasJalanData.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    adapter.setItem(it.data)
+                    adapter.setItem(it.values.toList())
                     progressBar.visibility = View.GONE
-                    totalPage = it.totalData.totalData.div(limit)
-                    totalPage += if (it.totalData.totalData.rem(limit) > 0) 1 else 0
+                    totalPage = viewModel.totalData.value?.div(limit) ?: 0
+                    totalPage += if (viewModel.totalData.value?.rem(limit) != 0) 1 else 0
                 } else {
                     adapter.setItem(emptyList())
                 }
@@ -115,7 +114,7 @@ class ListRuasJalanFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish()
                 }
-            //                requireActivity().finish()
+                //                requireActivity().finish()
             }
         })
     }
