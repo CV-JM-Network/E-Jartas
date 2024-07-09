@@ -127,7 +127,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     }
 
     fun deleteRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
-        repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever { it ->
+        repository.deleteRuasJalan(appContext, idAdmin, idruas, tokenAuth).observeForever {
             if (it.status == "success") {
                 // Use Transformations.map to create a new LiveData with the updated list
                 ruasJalanData.value?.let { currentData ->
@@ -135,7 +135,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
                         mutableMap.remove(idruas)
                         mutableMap.toMap() // Convert back to immutable map
                     }
-                    ruasJalanData.value = updatedData
+                    ruasJalanData.postValue(updatedData)
                 }
             }
             callback(it.status, it.message)

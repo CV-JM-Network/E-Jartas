@@ -76,4 +76,14 @@ interface ApiService {
         @Field("oleh") idadmin: Int,
         @Header("Authorization") authorization: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("provider/post/data")
+    fun provider(
+        @Field("action") action: String,
+        @Field("iddata") iddata: Int?,
+        @Field("data") data: JSONObject?,
+        @Field("oleh") idadmin: Int,
+        @Header("Authorization") authorization: String
+    ): Call<DefaultResponse>
 }

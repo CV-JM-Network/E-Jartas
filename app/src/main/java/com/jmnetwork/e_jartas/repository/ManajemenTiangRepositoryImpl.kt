@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.jmnetwork.e_jartas.model.DefaultResponse
+import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.model.ProviderResponse
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.utils.CustomHandler
@@ -42,8 +43,37 @@ class ManajemenTiangRepositoryImpl : ManajemenTiangRepository {
         return providerData
     }
 
-    override fun addProvider(context: Context, idadmin: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun addProvider(
+        context: Context, idadmin: Int, requestData: ProviderRequest, tokenAuth: String
+    ): LiveData<DefaultResponse> {
+        val result = MutableLiveData<DefaultResponse>()
+        val dataJson = Gson().toJson(requestData)
 
+        apiService.provider("add", null, JSONObject(dataJson), idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
+                    }
+                    CustomHandler().responseHandler(context, "addProvider|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                CustomHandler().responseHandler(context, "addProvider|onFailure", t.message.toString())
+                result.postValue(DefaultResponse(t.message.toString(), "failure"))
+            }
+        })
+
+        return result
+    }
 }

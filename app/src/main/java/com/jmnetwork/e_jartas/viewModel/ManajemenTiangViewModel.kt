@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.ProviderData
+import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.repository.ManajemenTiangRepositoryImpl
 import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
@@ -32,6 +33,41 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
             }
 
             providerData.postValue(updatedData)
+        }
+    }
+
+    private var addProviderRequestData: ProviderRequest = ProviderRequest(
+        emptyList(),
+        "",
+        ""
+    )
+
+    fun setAddProviderRequestData(
+        additional: List<String>,
+        alamat: String,
+        provider: String
+    ): String {
+        val fields = listOf(
+            alamat to "Alamat Provider",
+            provider to "Nama Provider"
+        )
+
+        for ((field, message) in fields) {
+            if (field.isEmpty()) return "$message tidak boleh kosong"
+        }
+
+        addProviderRequestData = ProviderRequest(
+            emptyList(),
+            alamat,
+            provider
+        )
+
+        return ""
+    }
+
+    fun addProvider(callback: (String, String) -> Unit) {
+        repository.addProvider(appContext, idAdmin, addProviderRequestData, tokenAuth).observeForever {
+            callback(it.status, it.message)
         }
     }
 }

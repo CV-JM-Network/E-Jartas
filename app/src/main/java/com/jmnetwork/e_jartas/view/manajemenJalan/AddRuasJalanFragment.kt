@@ -56,7 +56,25 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
         viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
         client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+        })
+
         binding.apply {
+            tvTitle.text = getString(R.string.tambah_ruas_jalan)
             bindProgressButton(btnRuasJalan)
             btnBack.setOnClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -170,23 +188,6 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
-                    requireActivity().supportFragmentManager.popBackStack()
-                } else {
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                }
-            //                requireActivity().finish()
-            }
-        })
     }
 
     @SuppressLint("PotentialBehaviorOverride")

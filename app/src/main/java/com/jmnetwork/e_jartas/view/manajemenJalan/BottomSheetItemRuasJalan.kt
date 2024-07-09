@@ -52,6 +52,12 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.btnHapusItem.setOnClickListener {
             val dialog = MaterialDialog.Builder(requireActivity())
                 .setTitle("Hapus Data")
@@ -95,8 +101,6 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
                 .commit()
             dismiss()
         }
-
-        return binding.root
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

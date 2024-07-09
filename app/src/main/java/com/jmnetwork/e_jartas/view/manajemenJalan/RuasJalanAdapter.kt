@@ -20,12 +20,12 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>(), Fi
 
     fun setItem(item: List<RuasJalanData>?) {
         if (item == null) return
+        this.list.clear()
+        this.listFiltered.clear()
         val prevSize = list.size
         this.list.addAll(item)
         this.listFiltered = ArrayList(this.list) // Make a copy of the original list
         notifyItemRangeChanged(prevSize, item.size)
-//        Log.d("Original", "count: ${list.size}; item: $list")
-//        Log.d("Filtered", "count: ${listFiltered.size}; item: $listFiltered")
     }
 
     class ItemHolder(private val binding: ItemRuasJalanBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -83,7 +83,6 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>(), Fi
                     }
                     filterResults.count = resultList.size
                     filterResults.values = resultList
-//                    Log.d("Filter1", "count: ${filterResults.count}; item: ${filterResults.values}")
                 }
                 return filterResults
             }
@@ -91,7 +90,6 @@ class RuasJalanAdapter : RecyclerView.Adapter<RuasJalanAdapter.ItemHolder>(), Fi
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 listFiltered = results?.values as? ArrayList<RuasJalanData> ?: arrayListOf()
-//                Log.d("Filter2", "count: ${listFiltered.size}; item: $listFiltered")
                 notifyDataSetChanged()
             }
         }

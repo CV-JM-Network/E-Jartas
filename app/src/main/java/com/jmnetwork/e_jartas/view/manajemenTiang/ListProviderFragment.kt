@@ -1,5 +1,6 @@
 package com.jmnetwork.e_jartas.view.manajemenTiang
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FragmentListProviderBinding
+import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenTiangViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 
@@ -32,8 +35,25 @@ class ListProviderFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenTiangViewModel::class.java]
         adapter = ProviderAdapter()
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+        })
+
         var page = 1
-        val limit = 10
+        val limit = 5
         var totalPage = 0
 
         binding.apply {
@@ -41,13 +61,22 @@ class ListProviderFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
+            btnTambahProvider.setOnClickListener {
+                val fragment = AddProviderFragment()
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.provider_fragment_container, fragment)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("AddProviderFragment")
+                    .commit()
+            }
+
             viewModel.apply {
                 providerData.observe(viewLifecycleOwner) {
                     if (it != null) {
                         adapter.setItem(it.values.toList())
                         progressBar.visibility = View.GONE
-                        totalPage = viewModel.totalData.value?.div(limit) ?: 0
-                        totalPage += if (viewModel.totalData.value?.rem(limit) != 0) 1 else 0
+                        totalPage = totalData.value?.div(limit) ?: 0
+                        totalPage += if (totalData.value?.rem(limit) != 0) 1 else 0
                     } else {
                         adapter.setItem(emptyList())
                     }
@@ -91,16 +120,5 @@ class ListProviderFragment : Fragment() {
             })
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().supportFragmentManager.popBackStack()
-                requireActivity().finish()
-            }
-        })
     }
 }

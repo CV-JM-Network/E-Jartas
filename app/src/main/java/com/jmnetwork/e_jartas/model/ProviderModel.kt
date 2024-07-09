@@ -1,6 +1,7 @@
 package com.jmnetwork.e_jartas.model
 
 import com.google.gson.annotations.SerializedName
+import org.json.JSONObject
 
 data class ProviderResponse(
     @SerializedName("current_page") val currentPage: String,
@@ -21,4 +22,10 @@ data class ProviderData(
     @SerializedName("oleh") val oleh: Int,
     @SerializedName("provider") val provider: String,
     @SerializedName("status") val status: String
+)
+
+data class ProviderRequest(
+    @SerializedName("additional") val additional: List<JSONObject>,
+    @SerializedName("alamat") val alamat: String,
+    @SerializedName("provider") val provider: String
 )

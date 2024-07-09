@@ -48,6 +48,7 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
 
     private var latLng: LatLng? = null
     private var currentMarker: Marker? = null
+    private var idRuasJalan: Int = 0
 
     companion object {
         const val ID_RUAS_JALAN = "id_ruas_jalan"
@@ -62,7 +63,26 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
         viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenJalanViewModel::class.java]
         client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        val idRuasJalan = requireArguments().getInt(ID_RUAS_JALAN)
+        idRuasJalan = requireArguments().getInt(ID_RUAS_JALAN)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // TODO: Implement the back button action properly
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }//                requireActivity().finish()
+            }
+        })
+
         val ruasJalanDatas = viewModel.ruasJalanData.value
         val ruasJalanData = ruasJalanDatas?.values?.find { it.idRuasJalan == idRuasJalan }
 
@@ -214,23 +234,6 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
 
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // TODO: Implement the back button action properly
-                if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
-                    requireActivity().supportFragmentManager.popBackStack()
-                } else {
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                }//                requireActivity().finish()
-            }
-        })
     }
 
     @SuppressLint("PotentialBehaviorOverride")

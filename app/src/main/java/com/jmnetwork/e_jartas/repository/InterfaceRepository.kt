@@ -6,6 +6,7 @@ import com.jmnetwork.e_jartas.model.DasboardModel
 import com.jmnetwork.e_jartas.model.DefaultResponse
 import com.jmnetwork.e_jartas.model.LoginRequest
 import com.jmnetwork.e_jartas.model.LoginResponse
+import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.model.ProviderResponse
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
@@ -26,7 +27,7 @@ interface ManajemenJalanRepository {
 
 interface ManajemenTiangRepository {
     fun getProvider(context: Context, limit: Int, page: Int, tokenAuth: String): LiveData<ProviderResponse>
-    fun addProvider(context: Context, idadmin: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
-//    fun editProvider(context: Context, idadmin: Int, iddata: Int, requestData: RuasJalanRequest, tokenAuth: String): LiveData<DefaultResponse>
+    fun addProvider(context: Context, idadmin: Int, requestData: ProviderRequest, tokenAuth: String): LiveData<DefaultResponse>
+//    fun editProvider(context: Context, idadmin: Int, iddata: Int, requestData: ProviderRequest, tokenAuth: String): LiveData<DefaultResponse>
 //    fun deleteProvider(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse>
 }

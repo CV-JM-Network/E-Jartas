@@ -1,65 +1,80 @@
 <resources>
+    <!--    Application Information-->
     <string name="app_name">E-jartas</string>
-    <string name="try_again">Silahkan Coba Lagi</string>
-    <string name="email">Email</string>
-    <string name="password">Kata sandi</string>
-    <string name="login_title">Login Akun</string>
+    <string name="app_ver">App Version %1$s</string>
+
+    <!--    User Interface Text-->
+    <string name="address">Alamat</string>
+    <string name="btn_save">Update Profil</string>
+    <string name="change_photo">Ganti Foto</string>
+    <string name="confirm_logout">Anda Yakin Ingin Logout?</string>
     <string name="login_button">Masuk</string>
+    <string name="login_title">Login Akun</string>
+    <string name="logout">Logout</string>
+    <string name="name">Nama</string>
+    <string name="no">Tidak</string>
+    <string name="password">Kata sandi</string>
+    <string name="phone">Nomor HP</string>
+    <string name="try_again">Silahkan Coba Lagi</string>
+    <string name="yes">Ya</string>
+
+    <!--    Validation Messages-->
     <string name="email_cant_empty">Email tidak boleh kosong</string>
     <string name="email_format_error">Format email salah</string>
     <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
+
+    <!--    Bottom Navigation-->
+    <string name="bottom_nav_home">Beranda</string>
     <string name="bottom_nav_scan_qr">Scan QR Code</string>
     <string name="bottom_nav_settings">Pengaturan</string>
-    <string name="bottom_nav_home">Beranda</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="change_photo">Ganti Foto</string>
-    <string name="name">Nama</string>
-    <string name="address">Alamat</string>
-    <string name="phone">Nomor HP</string>
-    <string name="btn_save">Update Profil</string>
-    <string name="logout">Logout</string>
-    <string name="app_ver">App Version %1$s</string>
-    <string name="confirm_logout">Anda Yakin Ingin Logout?</string>
-    <string name="no">Tidak</string>
-    <string name="yes">Ya</string>
-    <string name="panjang_km">%1$s Km</string>
-    <string name="manajemen_jalan">Manajemen Jalan</string>
+
+    <!--    Manajemen Jalan-->
+    <string name="desa">Desa: %1$s</string>
+    <string name="edit_ruas_jalan">Edit Ruas Jalan</string>
+    <string name="fungsi">Fungsi: %1$s</string>
+    <string name="icon_empty">ikon data kosong</string>
     <string name="icon_manajemen_jalan">ikon tombol manajemen jalan</string>
-    <string name="ruas_jalan">Ruas Jalan</string>
     <string name="icon_ruas_jalan">ikon tombol ruas jalan</string>
     <string name="info_terkini">Info Terkini</string>
-    <string name="tiang">Tiang</string>
-    <string name="titik_lokasi">Titik Lokasi</string>
+    <string name="input_nama_ruas_jalan">Nama Ruas Jalan</string>
+    <string name="input_nomor_ruas_jalan">Nomor Ruas Jalan</string>
+    <string name="input_panjang_ruas_jalan">Panjang Ruas Jalan (Km)</string>
     <string name="jalan">Jalan</string>
-    <string name="panjang">Panjang</string>
-    <string name="provider">Provider</string>
-    <string name="manajemen_tiang">Manajemen Tiang</string>
-    <string name="tambah_ruas_jalan">Tambah Ruas Jalan</string>
-    <string name="btn_back">tombol kembali</string>
-    <string name="icon_empty">ikon data kosong</string>
-    <string name="nomor_ruas_jalan">No. Ruas Jalan: %1$s</string>
     <string name="kecamatan">Kecamatan: %1$s</string>
-    <string name="desa">Desa: %1$s</string>
+    <string name="koordinat_ruas_jalan">Koordinat Ruas Jalan</string>
+    <string name="manajemen_jalan">Manajemen Jalan</string>
+    <string name="nomor_ruas_jalan">No. Ruas Jalan: %1$s</string>
+    <string name="panjang">Panjang</string>
     <string name="panjang_jalan">Panjang: %1$s Km</string>
+    <string name="panjang_km">%1$s Km</string>
+    <string name="ruas_jalan">Ruas Jalan</string>
+    <string name="ruas_jalan_detail">Lihat Detail</string>
     <string name="status">Status: %1$s</string>
     <string name="tipe">Tipe: %1$s</string>
-    <string name="fungsi">Fungsi: %1$s</string>
-    <string name="ruas_jalan_detail">Lihat Detail</string>
-    <string name="input_nomor_ruas_jalan">Nomor Ruas Jalan</string>
-    <string name="input_nama_ruas_jalan">Nama Ruas Jalan</string>
-    <string name="btn_tambah_ruas_jalan">Tambahkan Ruas Jalan</string>
-    <string name="koordinat_ruas_jalan">Koordinat Ruas Jalan</string>
-    <string name="input_panjang_ruas_jalan">Panjang Ruas Jalan (Km)</string>
-    <string name="btn_hapus_ruas_jalan">Hapus Data</string>
+    <string name="tambah_ruas_jalan">Tambah Ruas Jalan</string>
+    <string name="btn_back">tombol kembali</string>
     <string name="btn_edit_ruas_jalan">Edit Data</string>
+    <string name="btn_hapus_ruas_jalan">Hapus Data</string>
+    <string name="btn_tambah_ruas_jalan">Tambahkan Ruas Jalan</string>
     <string name="confirm_delete">Apakah Anda Yakin Ingin Menghapus Data Ini?</string>
-    <string name="edit_ruas_jalan">Edit Ruas Jalan</string>
+
+    <!--    Manajemen Tiang-->
+    <string name="add_provider">Tambah Provider</string>
+    <string name="alamat_provider">Alamat: %1$s</string>
+    <string name="blacklist">Blacklist: %1$s</string>
+    <string name="btn_tambah_provider">Tambahkan Provider</string>
     <string name="icon_provider">ikon tombol provider</string>
     <string name="icon_titik_tiang">ikon tombol titik tiang</string>
-    <string name="titik_tiang">Titik Tiang</string>
-    <string name="alamat_provider">Alamat: %1$s</string>
-    <string name="jml_tiang">Jumlah Tiang: %1$d</string>
-    <string name="blacklist">Blacklist: %1$s</string>
     <string name="informasi_tambahan">Informasi Tambahan</string>
     <string name="informasi_tambahan_item">• %1$s: %2$s</string>
+    <string name="input_alamat_provider">Alamat Provider</string>
+    <string name="input_nama_provider">Nama Provider</string>
+    <string name="jml_tiang">Jumlah Tiang: %1$d</string>
+    <string name="manajemen_tiang">Manajemen Tiang</string>
+    <string name="provider">Provider</string>
+    <string name="tambah_provider">ikon tambah provider</string>
+    <string name="tiang">Tiang</string>
+    <string name="titik_lokasi">Titik Lokasi</string>
+    <string name="titik_tiang">Titik Tiang</string>
+
 </resources>

@@ -25,6 +25,8 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
 
     fun setItem(item: List<ProviderData>?) {
         if (item == null) return
+        this.list.clear()
+        this.listFiltered.clear()
         val prevSize = list.size
         this.list.addAll(item)
         this.listFiltered = ArrayList(this.list) // Make a copy of the original list

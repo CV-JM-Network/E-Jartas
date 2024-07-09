@@ -39,7 +39,9 @@ class ProviderActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
             .replace(R.id.provider_fragment_container, fragment)
+            .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
     }
 }
