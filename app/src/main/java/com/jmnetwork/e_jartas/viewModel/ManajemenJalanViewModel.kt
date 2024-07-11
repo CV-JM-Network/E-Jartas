@@ -122,6 +122,16 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
 
     fun editRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
         repository.editRuasJalan(appContext, idAdmin, idruas, addRuasJalanRequest, tokenAuth).observeForever {
+            if (it.status == "success") {
+                // Use Transformations.map to create a new LiveData with the updated list
+                ruasJalanData.value?.let { currentData ->
+                    val updatedData = currentData.toMutableMap().let { mutableMap ->
+                        mutableMap[idruas] = addRuasJalanRequest.toRuasJalanData(idAdmin, addRuasJalanRequest)
+                        mutableMap.toMap() // Convert back to immutable map
+                    }
+                    ruasJalanData.postValue(updatedData)
+                }
+            }
             callback(it.status, it.message)
         }
     }

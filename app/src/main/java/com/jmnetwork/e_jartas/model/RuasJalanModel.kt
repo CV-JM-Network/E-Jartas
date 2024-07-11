@@ -1,9 +1,7 @@
 package com.jmnetwork.e_jartas.model
 
-import android.os.Parcelable
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import org.json.JSONObject
 
 data class RuasJalanResponse(
@@ -33,7 +31,6 @@ data class RuasJalanData(
     @SerializedName("tipe") val tipe: String
 )
 
-@Parcelize
 data class RuasJalanRequest(
     @SerializedName("idruas_jalan") val idRuasJalan: Int,
     @SerializedName("no_ruas") val noRuas: String,
@@ -45,11 +42,31 @@ data class RuasJalanRequest(
     @SerializedName("tipe") val tipe: String,
     @SerializedName("fungsi") val fungsi: String,
     @SerializedName("latlong") val latLong: List<Location>,
-    @SerializedName("additional") val additional: @RawValue List<JSONObject>
-) : Parcelable
+    @SerializedName("additional") val additional: List<JSONObject>
+) {
+    fun toRuasJalanData(idadmin: Int, data: RuasJalanRequest): RuasJalanData {
+        val latLong = Gson().toJson(data.latLong)
 
-@Parcelize
+        return RuasJalanData(
+            additional = data.additional.toString(),
+            createdDate = "",
+            desa = data.desa,
+            fungsi = data.fungsi,
+            idRuasJalan = data.idRuasJalan,
+            kecamatan = data.kecamatan,
+            lastUpdate = "",
+            latLong = latLong,
+            namaRuasJalan = data.namaRuasJalan,
+            noRuas = data.noRuas,
+            oleh = idadmin,
+            panjang = data.panjang,
+            status = data.status,
+            tipe = data.tipe
+        )
+    }
+}
+
 data class Location(
     @SerializedName("lat") val lat: String,
     @SerializedName("lng") val lng: String
-) : Parcelable
+)
