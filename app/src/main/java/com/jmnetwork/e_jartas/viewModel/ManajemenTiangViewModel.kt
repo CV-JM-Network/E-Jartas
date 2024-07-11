@@ -85,4 +85,17 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
             callback(it.status, it.message)
         }
     }
+
+    fun deleteProvider(idProvider: Int, callback: (String, String) -> Unit) {
+        repository.deleteProvider(appContext, idAdmin, idProvider, tokenAuth).observeForever {
+            if (it.status == "success") {
+                val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
+                val updatedData = currentData.toMutableMap()
+
+                updatedData.remove(idProvider)
+                providerData.postValue(updatedData)
+            }
+            callback(it.status, it.message)
+        }
+    }
 }

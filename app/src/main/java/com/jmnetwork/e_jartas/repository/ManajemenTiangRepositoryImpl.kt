@@ -107,4 +107,35 @@ class ManajemenTiangRepositoryImpl : ManajemenTiangRepository {
 
         return result
     }
+
+    override fun deleteProvider(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse> {
+        val result = MutableLiveData<DefaultResponse>()
+
+        apiService.provider("delete", iddata, null, idadmin, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
+                    }
+                    CustomHandler().responseHandler(context, "deleteProvider|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                CustomHandler().responseHandler(context, "deleteProvider|onFailure", t.message.toString())
+                result.postValue(DefaultResponse(t.message.toString(), "failure"))
+            }
+        })
+
+        return result
+    }
 }

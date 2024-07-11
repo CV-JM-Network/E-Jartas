@@ -54,19 +54,19 @@ class BottomSheetItemProvider : BottomSheetDialogFragment() {
                     }
                     .setNegativeButton(getString(R.string.yes), R.drawable.ic_trash) { dialogInterface, _ ->
                         dialogInterface.dismiss()
-//                    viewModel.deleteRuasJalan(ruasjalanData!!.idRuasJalan) { status, message ->
-//                        when (status) {
-//                            "success" -> {
-//                                Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
-//                                dismiss()
-//                            }
-//
-//                            else -> {
-//                                Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
-//                                dismiss()
-//                            }
-//                        }
-//                    }
+                        viewModel.deleteProvider(providerData!!.idProvider) { status, message ->
+                            when (status) {
+                                "success" -> {
+                                    Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                                    dismiss()
+                                }
+
+                                else -> {
+                                    Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                                    dismiss()
+                                }
+                            }
+                        }
                     }
                     .build()
                 dialog.show()
