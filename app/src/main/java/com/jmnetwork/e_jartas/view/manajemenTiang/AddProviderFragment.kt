@@ -72,7 +72,7 @@ class AddProviderFragment : Fragment() {
                 )
 
                 if (validate.isEmpty()) {
-                    viewModel.addProvider() { status, message ->
+                    viewModel.addProvider { status, message ->
                         when (status) {
                             "success" -> {
                                 Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()

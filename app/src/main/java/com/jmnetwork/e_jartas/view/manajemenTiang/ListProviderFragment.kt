@@ -53,7 +53,7 @@ class ListProviderFragment : Fragment() {
         })
 
         var page = 1
-        val limit = 5
+        val limit = 10
         var totalPage = 0
 
         binding.apply {

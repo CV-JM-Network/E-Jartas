@@ -33,7 +33,7 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
         notifyItemRangeChanged(prevSize, item.size)
     }
 
-    class ItemHolder(private val binding: ItemProviderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ItemHolder(private val binding: ItemProviderBinding) : RecyclerView.ViewHolder(binding.root) {
         private var linearLayout: LinearLayout? = null
 
         fun bind(item: ProviderData) {
@@ -94,6 +94,17 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
                     }
                 } else {
                     binding.tvInformasiTambahan.visibility = View.GONE
+                }
+
+                itemProvider.setOnClickListener {
+                    val bottomSheet = BottomSheetItemProvider().apply {
+                        arguments = item.idProvider.let { idProvider ->
+                            android.os.Bundle().apply {
+                                putInt("idProvider", idProvider)
+                            }
+                        }
+                    }
+                    bottomSheet.show((itemView.context as androidx.appcompat.app.AppCompatActivity).supportFragmentManager, bottomSheet.tag)
                 }
             }
         }

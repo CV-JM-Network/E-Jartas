@@ -86,4 +86,13 @@ interface ApiService {
         @Field("oleh") idadmin: Int,
         @Header("Authorization") authorization: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("provider/post/data/blacklist")
+    fun blacklistProvider(
+        @Field("oleh") idadmin: Int,
+        @Field("idprovider") iddata: Int,
+        @Field("black_list") blackList: String,
+        @Header("Authorization") authorization: String
+    ): Call<DefaultResponse>
 }

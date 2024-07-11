@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.jmnetwork.e_jartas.model.DefaultResponse
 import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.model.ProviderResponse
-import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.utils.CustomHandler
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -70,6 +69,38 @@ class ManajemenTiangRepositoryImpl : ManajemenTiangRepository {
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 CustomHandler().responseHandler(context, "addProvider|onFailure", t.message.toString())
+                result.postValue(DefaultResponse(t.message.toString(), "failure"))
+            }
+        })
+
+        return result
+    }
+
+    override fun blacklistProvider(context: Context, idadmin: Int, iddata: Int, isBlacklist: Boolean, tokenAuth: String): LiveData<DefaultResponse> {
+        val result = MutableLiveData<DefaultResponse>()
+        val blacklistStatus = if (isBlacklist) "ya" else "tidak"
+
+        apiService.blacklistProvider(idadmin, iddata, blacklistStatus, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        result.postValue(DefaultResponse(it.message, it.status))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    val status = when (response.code()) {
+                        400 -> "bad_request"
+                        500 -> "internal_server_error"
+                        else -> "error"
+                    }
+                    CustomHandler().responseHandler(context, "blacklistProvider|onResponse", errorMsg, response.code())
+                    result.postValue(DefaultResponse(response.message(), status))
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                CustomHandler().responseHandler(context, "blacklistProvider|onFailure", t.message.toString())
                 result.postValue(DefaultResponse(t.message.toString(), "failure"))
             }
         })

@@ -12,7 +12,7 @@ import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 class ProviderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProviderBinding
-    private lateinit var viewModel: ManajemenTiangViewModel
+    lateinit var viewModel: ManajemenTiangViewModel
 
     companion object {
         const val DESTINATION = "destination"
@@ -24,7 +24,7 @@ class ProviderActivity : AppCompatActivity() {
         setContentView(binding.root)
         val factory = ViewModelFactory.getInstance(this@ProviderActivity.application)
         viewModel = ViewModelProvider(this@ProviderActivity, factory)[ManajemenTiangViewModel::class.java]
-        viewModel.getProvider(10, 1) // Get Provider data from API
+        viewModel.getProvider(5, 1) // Get Provider data from API
 
         if (intent.hasExtra(DESTINATION)) {
             when (intent.getStringExtra(DESTINATION)) {

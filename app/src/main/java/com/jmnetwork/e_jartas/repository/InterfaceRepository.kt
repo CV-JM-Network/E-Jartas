@@ -28,6 +28,7 @@ interface ManajemenJalanRepository {
 interface ManajemenTiangRepository {
     fun getProvider(context: Context, limit: Int, page: Int, tokenAuth: String): LiveData<ProviderResponse>
     fun addProvider(context: Context, idadmin: Int, requestData: ProviderRequest, tokenAuth: String): LiveData<DefaultResponse>
+    fun blacklistProvider(context: Context, idadmin: Int, iddata: Int, isBlacklist: Boolean, tokenAuth: String): LiveData<DefaultResponse>
 //    fun editProvider(context: Context, idadmin: Int, iddata: Int, requestData: ProviderRequest, tokenAuth: String): LiveData<DefaultResponse>
 //    fun deleteProvider(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse>
 }

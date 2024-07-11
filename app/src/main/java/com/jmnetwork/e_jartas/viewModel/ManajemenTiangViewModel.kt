@@ -70,4 +70,19 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
             callback(it.status, it.message)
         }
     }
+
+    fun blacklistProvider(idProvider: Int, isBlacklist: Boolean, callback: (String, String) -> Unit) {
+        repository.blacklistProvider(appContext, idAdmin, idProvider, isBlacklist, tokenAuth).observeForever {it ->
+            if (it.status == "success") {
+                val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
+                val updatedData = currentData.toMutableMap()
+
+                updatedData[idProvider]?.let {
+                    updatedData[idProvider] = it.copy(blackList = if (isBlacklist) "ya" else "tidak")
+                }
+                providerData.postValue(updatedData)
+            }
+            callback(it.status, it.message)
+        }
+    }
 }

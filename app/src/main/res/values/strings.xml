@@ -76,5 +76,6 @@
     <string name="tiang">Tiang</string>
     <string name="titik_lokasi">Titik Lokasi</string>
     <string name="titik_tiang">Titik Tiang</string>
-
+    <string name="blacklist_true">Blacklist</string>
+    <string name="blacklist_false">Buka Blacklist</string>
 </resources>
