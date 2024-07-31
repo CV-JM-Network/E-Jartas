@@ -33,7 +33,8 @@ android {
         }
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
-                def name = "E-Jartas.apk"
+                def versionName = variant.versionName
+                def name = "E-Jartas-${versionName}.apk"
                 output.outputFileName = name
             }
         }
