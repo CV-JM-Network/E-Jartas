@@ -72,7 +72,9 @@ class BottomSheetItemProvider : BottomSheetDialogFragment() {
                 dialog.show()
             }
 
-            btnEditItem.setOnClickListener {}
+            btnEditItem.setOnClickListener {
+
+            }
 
             swBlacklist.apply {
                 isChecked = providerData?.blackList == "ya"

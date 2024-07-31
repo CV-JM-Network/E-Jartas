@@ -36,13 +36,11 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private var addProviderRequestData: ProviderRequest = ProviderRequest(
-        emptyList(),
-        "",
-        ""
+    private var requestData: ProviderRequest = ProviderRequest(
+        emptyList(), "", ""
     )
 
-    fun setAddProviderRequestData(
+    fun setRequestData(
         additional: List<String>,
         alamat: String,
         provider: String
@@ -56,7 +54,7 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
             if (field.isEmpty()) return "$message tidak boleh kosong"
         }
 
-        addProviderRequestData = ProviderRequest(
+        requestData = ProviderRequest(
             emptyList(),
             alamat,
             provider
@@ -66,19 +64,37 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
     }
 
     fun addProvider(callback: (String, String) -> Unit) {
-        repository.addProvider(appContext, idAdmin, addProviderRequestData, tokenAuth).observeForever {
+        repository.addProvider(appContext, idAdmin, requestData, tokenAuth).observeForever {
             callback(it.status, it.message)
         }
     }
 
     fun blacklistProvider(idProvider: Int, isBlacklist: Boolean, callback: (String, String) -> Unit) {
-        repository.blacklistProvider(appContext, idAdmin, idProvider, isBlacklist, tokenAuth).observeForever {it ->
+        repository.blacklistProvider(appContext, idAdmin, idProvider, isBlacklist, tokenAuth).observeForever { it ->
             if (it.status == "success") {
                 val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
                 val updatedData = currentData.toMutableMap()
 
                 updatedData[idProvider]?.let {
                     updatedData[idProvider] = it.copy(blackList = if (isBlacklist) "ya" else "tidak")
+                }
+                providerData.postValue(updatedData)
+            }
+            callback(it.status, it.message)
+        }
+    }
+
+    fun editProvider(idProvider: Int, callback: (String, String) -> Unit) {
+        repository.editProvider(appContext, idAdmin, idProvider, requestData, tokenAuth).observeForever { it ->
+            if (it.status == "success") {
+                val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
+                val updatedData = currentData.toMutableMap()
+
+                updatedData[idProvider]?.let {
+                    updatedData[idProvider] = it.copy(
+                        alamat = requestData.alamat,
+                        provider = requestData.provider
+                    )
                 }
                 providerData.postValue(updatedData)
             }

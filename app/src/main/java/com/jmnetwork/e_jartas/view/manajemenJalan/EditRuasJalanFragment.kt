@@ -196,7 +196,7 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
                     latLng?.longitude.toString()
                 )
 
-                val validate = viewModel.setAddRuasJalanRequest(
+                val validate = viewModel.setRequestData(
                     idRuasJalan,
                     inputNoRuas,
                     inputNamaRuas,

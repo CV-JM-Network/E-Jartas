@@ -56,7 +56,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         fetchSpinnerData("fungsi", fungsiSpinner)
     }
 
-    private var addRuasJalanRequest: RuasJalanRequest = RuasJalanRequest(
+    private var requestData: RuasJalanRequest = RuasJalanRequest(
         0, "", "", "", "", "", "", "", "", emptyList(), emptyList()
     )
 
@@ -66,7 +66,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun setAddRuasJalanRequest(
+    fun setRequestData(
         idRuasJalan: Int,
         noRuas: String,
         namaRuasJalan: String,
@@ -96,7 +96,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
 
         if (latlong.isEmpty()) return "Latlong tidak boleh kosong"
 
-        addRuasJalanRequest = RuasJalanRequest(
+        requestData = RuasJalanRequest(
             idRuasJalan,
             noRuas,
             namaRuasJalan,
@@ -115,18 +115,18 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
 
 
     fun addRuasJalan(callback: (String, String) -> Unit) {
-        repository.addRuasJalan(appContext, idAdmin, addRuasJalanRequest, tokenAuth).observeForever {
+        repository.addRuasJalan(appContext, idAdmin, requestData, tokenAuth).observeForever {
             callback(it.status, it.message)
         }
     }
 
     fun editRuasJalan(idruas: Int, callback: (String, String) -> Unit) {
-        repository.editRuasJalan(appContext, idAdmin, idruas, addRuasJalanRequest, tokenAuth).observeForever {
+        repository.editRuasJalan(appContext, idAdmin, idruas, requestData, tokenAuth).observeForever {
             if (it.status == "success") {
                 // Use Transformations.map to create a new LiveData with the updated list
                 ruasJalanData.value?.let { currentData ->
                     val updatedData = currentData.toMutableMap().let { mutableMap ->
-                        mutableMap[idruas] = addRuasJalanRequest.toRuasJalanData(idAdmin, addRuasJalanRequest)
+                        mutableMap[idruas] = requestData.toRuasJalanData(idAdmin, requestData)
                         mutableMap.toMap() // Convert back to immutable map
                     }
                     ruasJalanData.postValue(updatedData)

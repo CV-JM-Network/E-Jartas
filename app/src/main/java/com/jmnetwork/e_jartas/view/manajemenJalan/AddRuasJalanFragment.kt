@@ -151,7 +151,7 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
                     latLng?.longitude.toString()
                 )
 
-                val validate = viewModel.setAddRuasJalanRequest(
+                val validate = viewModel.setRequestData(
                     0,
                     inputNoRuas,
                     inputNamaRuas,
