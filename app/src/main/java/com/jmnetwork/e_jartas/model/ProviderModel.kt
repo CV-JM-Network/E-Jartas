@@ -14,7 +14,7 @@ data class ProviderResponse(
 )
 
 data class ProviderData(
-    @SerializedName("additional") val additional: String,
+    @SerializedName("additional") var additional: Additional,
     @SerializedName("alamat") val alamat: String,
     @SerializedName("black_list") val blackList: String,
     @SerializedName("idprovider") val idProvider: Int,
@@ -25,7 +25,7 @@ data class ProviderData(
 )
 
 data class ProviderRequest(
-    @SerializedName("additional") val additional: List<JSONObject>,
+    @SerializedName("additional") val additional: Additional,
     @SerializedName("alamat") val alamat: String,
     @SerializedName("provider") val provider: String
 )

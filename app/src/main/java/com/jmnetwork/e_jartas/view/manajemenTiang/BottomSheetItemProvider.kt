@@ -73,7 +73,18 @@ class BottomSheetItemProvider : BottomSheetDialogFragment() {
             }
 
             btnEditItem.setOnClickListener {
+                val editProviderFragment = EditProviderFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(EditProviderFragment.ID_PROVIDER, providerData!!.idProvider)
+                    }
+                }
 
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.provider_fragment_container, editProviderFragment)
+                    .addToBackStack("EditProviderFragment")
+                    .setReorderingAllowed(true)
+                    .commit()
+                dismiss()
             }
 
             swBlacklist.apply {

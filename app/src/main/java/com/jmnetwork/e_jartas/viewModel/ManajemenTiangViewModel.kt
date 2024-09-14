@@ -3,6 +3,7 @@ package com.jmnetwork.e_jartas.viewModel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jmnetwork.e_jartas.model.Additional
 import com.jmnetwork.e_jartas.model.ProviderData
 import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.repository.ManajemenTiangRepositoryImpl
@@ -37,11 +38,11 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
     }
 
     private var requestData: ProviderRequest = ProviderRequest(
-        emptyList(), "", ""
+        Additional(), "", ""
     )
 
     fun setRequestData(
-        additional: List<String>,
+        additional: Additional,
         alamat: String,
         provider: String
     ): String {
@@ -55,7 +56,7 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
         }
 
         requestData = ProviderRequest(
-            emptyList(),
+            additional,
             alamat,
             provider
         )

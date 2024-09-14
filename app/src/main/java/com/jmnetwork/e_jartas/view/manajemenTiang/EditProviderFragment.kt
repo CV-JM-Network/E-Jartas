@@ -20,11 +20,18 @@ import com.jmnetwork.e_jartas.viewModel.ManajemenTiangViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
 import es.dmoral.toasty.Toasty
 
-class AddProviderFragment : Fragment() {
+
+class EditProviderFragment : Fragment() {
 
     private lateinit var _binding: FormProviderBinding
     private val binding get() = _binding
     private lateinit var viewModel: ManajemenTiangViewModel
+
+    private var idProvider: Int = 0
+
+    companion object {
+        const val ID_PROVIDER = "id_provider"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,61 +41,73 @@ class AddProviderFragment : Fragment() {
         val factory = ViewModelFactory.getInstance(requireActivity().application)
         viewModel = ViewModelProvider(requireActivity(), factory)[ManajemenTiangViewModel::class.java]
 
+        idProvider = requireArguments().getInt(ID_PROVIDER)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                // TODO: Implement the back button action properly
                 if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
                     requireActivity().supportFragmentManager.popBackStack()
                 } else {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
-                }
+                }//                requireActivity().finish()
             }
         })
 
-        binding.apply {
-            tvTitle.text = getString(R.string.add_provider)
-            bindProgressButton(btnProvider)
+        val providers = viewModel.providerData.value
+        val provider = providers?.values?.find { it.idProvider == idProvider }
 
-            btnBack.setOnClickListener {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+        binding.apply {
+            bindProgressButton(btnProvider)
+            tvTitle.text = getString(R.string.edit_provider)
+            btnProvider.text = getString(R.string.edit_provider)
+
+            var additional = Additional()
+            if (provider != null) {
+                inputNamaProvider.setText(provider.provider)
+                inputAlamatProvider.setText(provider.alamat)
+                additional = provider.additional
             }
 
             btnProvider.setOnClickListener {
-                btnProvider.attachTextChangeAnimator()
-                btnProvider.showProgress()
-
                 val namaProvider = inputNamaProvider.text.toString()
                 val alamatProvider = inputAlamatProvider.text.toString()
 
+                btnProvider.attachTextChangeAnimator()
+                btnProvider.showProgress()
+
                 val validate = viewModel.setRequestData(
-                    Additional(),
+                    additional,
                     alamatProvider,
                     namaProvider
                 )
 
-                if (validate.isEmpty()) {
-                    viewModel.addProvider { status, message ->
-                        when (status) {
-                            "success" -> {
-                                Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }
+                if (validate.isNotEmpty()) {
+                    Toasty.error(requireContext(), validate, Toasty.LENGTH_SHORT).show()
+                    btnProvider.hideProgress(R.string.edit_provider)
+                    return@setOnClickListener
+                }
 
-                            else -> {
-                                Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
-                                btnProvider.hideProgress(R.string.add_provider)
-                            }
+                viewModel.editProvider(idProvider) { status, message ->
+                    when (status) {
+                        "success" -> {
+                            Toasty.success(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                        }
+
+                        else -> {
+                            Toasty.error(requireContext(), message, Toasty.LENGTH_SHORT).show()
+                            btnProvider.hideProgress(R.string.edit_provider)
                         }
                     }
-                } else {
-                    Toasty.error(requireContext(), validate, Toasty.LENGTH_SHORT).show()
-                    btnProvider.hideProgress(R.string.add_provider)
                 }
             }
         }

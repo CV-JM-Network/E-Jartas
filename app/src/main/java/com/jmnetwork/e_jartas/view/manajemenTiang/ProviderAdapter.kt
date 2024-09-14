@@ -14,9 +14,9 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.ItemProviderBinding
+import com.jmnetwork.e_jartas.model.Additional
 import com.jmnetwork.e_jartas.model.ProviderData
 import com.jmnetwork.e_jartas.utils.Utils
-import org.json.JSONArray
 
 class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filterable {
 
@@ -49,15 +49,8 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
                     tvBlacklist.setTextColor(Color.parseColor("#${Integer.toHexString(itemView.context.theme.obtainStyledAttributes(intArrayOf(colorRes)).getColor(0, Color.BLACK))}"))
                 }
 
-                if (item.additional != "[]") {
+                if (item.additional != Additional()) {
                     tvInformasiTambahan.visibility = View.VISIBLE
-
-                    val jsonArray = JSONArray(item.additional)
-                    val additionalInfoList = mutableListOf<Pair<String, String>>()
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        additionalInfoList.add(Pair(jsonObject.getString("parameter"), jsonObject.getString("value")))
-                    }
 
                     linearLayout = LinearLayout(itemView.context).apply {
                         id = View.generateViewId()
@@ -68,9 +61,9 @@ class ProviderAdapter : RecyclerView.Adapter<ProviderAdapter.ItemHolder>(), Filt
                         )
                     }
 
-                    for ((parameter, value) in additionalInfoList) {
+                    for (additional in item.additional) {
                         val textView = TextView(itemView.context).apply {
-                            text = itemView.context.getString(R.string.informasi_tambahan_item, parameter, value)
+                            text = itemView.context.getString(R.string.informasi_tambahan_item, additional.parameter, additional.value)
                             textSize = 16f
                             // get color from ?attr/colorOnSecondaryContainer
                             val colorRes = itemView.context.resources.getIdentifier("colorOnSecondaryContainer", "attr", itemView.context.packageName)

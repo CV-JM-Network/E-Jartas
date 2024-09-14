@@ -78,4 +78,7 @@
     <string name="titik_tiang">Titik Tiang</string>
     <string name="blacklist_true">Blacklist</string>
     <string name="blacklist_false">Buka Blacklist</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_provider">Edit Provider</string>
 </resources>

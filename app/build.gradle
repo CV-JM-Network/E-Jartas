@@ -34,7 +34,8 @@ android {
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
                 def versionName = variant.versionName
-                def name = "E-Jartas-${versionName}.apk"
+                def timeStamp = new Date().format("yyyyMMddHHmm")
+                def name = "E-Jartas-${versionName}-${timeStamp}.apk"
                 output.outputFileName = name
             }
         }

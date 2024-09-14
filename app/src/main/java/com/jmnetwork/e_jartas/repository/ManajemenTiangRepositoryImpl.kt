@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.jmnetwork.e_jartas.model.Additional
 import com.jmnetwork.e_jartas.model.DefaultResponse
 import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.model.ProviderResponse
+import com.jmnetwork.e_jartas.utils.AdditionalDeserializer
 import com.jmnetwork.e_jartas.utils.CustomHandler
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -24,8 +27,9 @@ class ManajemenTiangRepositoryImpl : ManajemenTiangRepository {
         apiService.getAllData(limit, page, "provider", tokenAuth).enqueue(object : retrofit2.Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
+                    val gson = GsonBuilder().registerTypeAdapter(Additional::class.java, AdditionalDeserializer()).create()
                     val responseString = response.body()?.string()
-                    val data = Gson().fromJson(responseString, ProviderResponse::class.java)
+                    val data = gson.fromJson(responseString, ProviderResponse::class.java)
                     providerData.postValue(data)
                 } else {
                     val errorBody = response.errorBody()?.string()
