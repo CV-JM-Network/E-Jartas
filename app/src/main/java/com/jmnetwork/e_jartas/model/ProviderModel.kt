@@ -1,7 +1,6 @@
 package com.jmnetwork.e_jartas.model
 
 import com.google.gson.annotations.SerializedName
-import org.json.JSONObject
 
 data class ProviderResponse(
     @SerializedName("current_page") val currentPage: String,

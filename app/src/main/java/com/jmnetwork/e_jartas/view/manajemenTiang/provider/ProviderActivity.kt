@@ -1,4 +1,4 @@
-package com.jmnetwork.e_jartas.view.manajemenTiang
+package com.jmnetwork.e_jartas.view.manajemenTiang.provider
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

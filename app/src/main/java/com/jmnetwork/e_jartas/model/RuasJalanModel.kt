@@ -22,7 +22,7 @@ data class RuasJalanData(
     @SerializedName("idruas_jalan") val idRuasJalan: Int,
     @SerializedName("kecamatan") val kecamatan: String,
     @SerializedName("lastupdate") val lastUpdate: String,
-    @SerializedName("latlong") val latLong: String?,
+    @SerializedName("latlong") val latLong: Location,
     @SerializedName("nama_ruas_jalan") val namaRuasJalan: String,
     @SerializedName("no_ruas") val noRuas: String,
     @SerializedName("oleh") val oleh: Int,
@@ -41,12 +41,10 @@ data class RuasJalanRequest(
     @SerializedName("status") val status: String,
     @SerializedName("tipe") val tipe: String,
     @SerializedName("fungsi") val fungsi: String,
-    @SerializedName("latlong") val latLong: List<Location>,
+    @SerializedName("latlong") val latLong: Location,
     @SerializedName("additional") val additional: List<JSONObject>
 ) {
     fun toRuasJalanData(idadmin: Int, data: RuasJalanRequest): RuasJalanData {
-        val latLong = Gson().toJson(data.latLong)
-
         return RuasJalanData(
             additional = data.additional.toString(),
             createdDate = "",
@@ -55,7 +53,7 @@ data class RuasJalanRequest(
             idRuasJalan = data.idRuasJalan,
             kecamatan = data.kecamatan,
             lastUpdate = "",
-            latLong = latLong,
+            latLong = data.latLong,
             namaRuasJalan = data.namaRuasJalan,
             noRuas = data.noRuas,
             oleh = idadmin,
@@ -65,8 +63,3 @@ data class RuasJalanRequest(
         )
     }
 }
-
-data class Location(
-    @SerializedName("lat") val lat: String,
-    @SerializedName("lng") val lng: String
-)

@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.jmnetwork.e_jartas.model.DefaultResponse
+import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import com.jmnetwork.e_jartas.model.SpinnerResponse
 import com.jmnetwork.e_jartas.utils.CustomHandler
+import com.jmnetwork.e_jartas.utils.LocationDeserializer
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -54,8 +57,9 @@ class ManajemenJalanRepositoryImpl : ManajemenJalanRepository {
         apiService.getAllData(limit, page, "ruas_jalan", tokenAuth).enqueue(object : retrofit2.Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
+                    val gson = GsonBuilder().registerTypeAdapter(Location::class.java, LocationDeserializer()).create()
                     val responseString = response.body()?.string()
-                    val data = Gson().fromJson(responseString, RuasJalanResponse::class.java)
+                    val data = gson.fromJson(responseString, RuasJalanResponse::class.java)
                     ruasJalanData.postValue(data)
                 } else {
                     val errorBody = response.errorBody()?.string()

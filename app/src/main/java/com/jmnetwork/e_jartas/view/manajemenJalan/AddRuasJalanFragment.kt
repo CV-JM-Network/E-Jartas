@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.jmnetwork.e_jartas.R
 import com.jmnetwork.e_jartas.databinding.FormRuasJalanBinding
 import com.jmnetwork.e_jartas.model.Location
+import com.jmnetwork.e_jartas.model.LocationItem
 import com.jmnetwork.e_jartas.view.MainActivity
 import com.jmnetwork.e_jartas.viewModel.ManajemenJalanViewModel
 import com.jmnetwork.e_jartas.viewModel.ViewModelFactory
@@ -146,10 +147,9 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
                 val inputTipe = spinnerTipe.selectedItem.takeIf { it != null }?.toString().orEmpty()
                 val inputFungsi = spinnerFungsi.selectedItem.takeIf { it != null }?.toString().orEmpty()
 
-                val latlng = Location(
-                    latLng?.latitude.toString(),
-                    latLng?.longitude.toString()
-                )
+                val location = Location().apply {
+                    add(LocationItem(latLng?.latitude.toString(), latLng?.longitude.toString()))
+                }
 
                 val validate = viewModel.setRequestData(
                     0,
@@ -161,7 +161,7 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
                     inputStatus,
                     inputTipe,
                     inputFungsi,
-                    listOf(latlng),
+                    location,
                     emptyList()
                 )
                 btnRuasJalan.attachTextChangeAnimator()

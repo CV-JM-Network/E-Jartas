@@ -57,7 +57,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
     }
 
     private var requestData: RuasJalanRequest = RuasJalanRequest(
-        0, "", "", "", "", "", "", "", "", emptyList(), emptyList()
+        0, "", "", "", "", "", "", "", "", Location(), emptyList()
     )
 
     private fun fetchSpinnerData(spinnerType: String, spinnerLiveData: MutableLiveData<SpinnerResponse>) {
@@ -76,7 +76,7 @@ class ManajemenJalanViewModel(application: Application) : ViewModel() {
         status: String,
         tipe: String,
         fungsi: String,
-        latlong: List<Location>,
+        latlong: Location,
         additional: List<JSONObject>
     ): String {
         val fields = listOf(

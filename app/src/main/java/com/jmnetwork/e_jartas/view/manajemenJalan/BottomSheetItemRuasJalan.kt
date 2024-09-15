@@ -102,8 +102,7 @@ class BottomSheetItemRuasJalan : BottomSheetDialogFragment(), OnMapReadyCallback
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val location = Utils().latLongConverter(ruasjalanData?.latLong ?: "")
-
+        val location = Utils().latLongConverter(ruasjalanData!!.latLong)
         if (location != null) {
             binding.ruasDetilMap.visibility = View.VISIBLE
             with(mMap) {
