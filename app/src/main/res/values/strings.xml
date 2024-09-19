@@ -78,7 +78,12 @@
     <string name="titik_tiang">Titik Tiang</string>
     <string name="blacklist_true">Blacklist</string>
     <string name="blacklist_false">Buka Blacklist</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_provider">Edit Provider</string>
+    <string name="tanggal_buat">Tanggal Pembuatan: %1$s</string>
+    <string name="tanggal_data">Tanggal Pendataan: %1$s</string>
+    <string name="tiang_provider">Provider: %1$s</string>
+    <string name="tiang_provider_number">%1$d.</string>
+    <string name="tiang_utilitas">Utilitas: %1$s</string>
+    <string name="tiang_catatan">Catatan: %1$s</string>
+    <string name="id_tiang">ID: %1$d</string>
 </resources>

@@ -7,10 +7,15 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jmnetwork.e_jartas.model.Additional
 import com.jmnetwork.e_jartas.model.DefaultResponse
+import com.jmnetwork.e_jartas.model.Location
 import com.jmnetwork.e_jartas.model.ProviderRequest
 import com.jmnetwork.e_jartas.model.ProviderResponse
+import com.jmnetwork.e_jartas.model.TiangProvider
+import com.jmnetwork.e_jartas.model.TiangResponse
 import com.jmnetwork.e_jartas.utils.AdditionalDeserializer
 import com.jmnetwork.e_jartas.utils.CustomHandler
+import com.jmnetwork.e_jartas.utils.LocationDeserializer
+import com.jmnetwork.e_jartas.utils.TiangProviderDeserializer
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -169,6 +174,34 @@ class ManajemenTiangRepositoryImpl : ManajemenTiangRepository {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 CustomHandler().responseHandler(context, "deleteProvider|onFailure", t.message.toString())
                 result.postValue(DefaultResponse(t.message.toString(), "failure"))
+            }
+        })
+
+        return result
+    }
+
+    override fun getTitikTiang(context: Context, limit: Int, page: Int, tokenAuth: String): LiveData<TiangResponse> {
+        val result = MutableLiveData<TiangResponse>()
+
+        apiService.getAllData(limit, page, "tiang", tokenAuth).enqueue(object : retrofit2.Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val gson = GsonBuilder()
+                        .registerTypeAdapter(TiangProvider::class.java, TiangProviderDeserializer())
+                        .registerTypeAdapter(Location::class.java, LocationDeserializer())
+                        .create()
+                    val responseString = response.body()?.string()
+                    val data = gson.fromJson(responseString, TiangResponse::class.java)
+                    result.postValue(data)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMsg = errorBody?.let { JSONObject(it).getString("message") } ?: "Unknown error"
+                    CustomHandler().responseHandler(context, "getTitikTiang|onResponse", errorMsg, response.code())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                CustomHandler().responseHandler(context, "getTitikTiang|onFailure", t.message.toString())
             }
         })
 

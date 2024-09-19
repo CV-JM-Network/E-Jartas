@@ -94,9 +94,7 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
 
             viewModel.apply {
                 if (ruasJalanData != null) {
-                    if (ruasJalanData.latLong != null) {
-                        latLng = Utils().latLongConverter(ruasJalanData.latLong)
-                    }
+                    latLng = Utils().latLongConverter(ruasJalanData.latLong)
 
                     inputNomorRuasJalan.setText(ruasJalanData.noRuas)
                     inputNamaRuasJalan.setText(ruasJalanData.namaRuasJalan)
@@ -193,7 +191,7 @@ class EditRuasJalanFragment : Fragment(), OnMapReadyCallback {
                 val inputFungsi = spinnerFungsi.selectedItem.takeIf { it != null }?.toString().orEmpty()
 
                 val location = Location().apply {
-                    add(LocationItem(latLng?.latitude.toString(), latLng?.longitude.toString()))
+                    add(LocationItem(latLng?.latitude.toString(), latLng?.longitude.toString(), ""))
                 }
 
                 val validate = viewModel.setRequestData(

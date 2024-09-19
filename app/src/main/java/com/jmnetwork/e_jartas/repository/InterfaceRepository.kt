@@ -11,6 +11,7 @@ import com.jmnetwork.e_jartas.model.ProviderResponse
 import com.jmnetwork.e_jartas.model.RuasJalanRequest
 import com.jmnetwork.e_jartas.model.RuasJalanResponse
 import com.jmnetwork.e_jartas.model.SpinnerResponse
+import com.jmnetwork.e_jartas.model.TiangResponse
 
 interface BaseRepository {
     fun login(context: Context, loginRequest: LoginRequest, deviceID: String, tokenAuth: String): LiveData<LoginResponse>
@@ -31,4 +32,6 @@ interface ManajemenTiangRepository {
     fun blacklistProvider(context: Context, idadmin: Int, iddata: Int, isBlacklist: Boolean, tokenAuth: String): LiveData<DefaultResponse>
     fun editProvider(context: Context, idadmin: Int, iddata: Int, requestData: ProviderRequest, tokenAuth: String): LiveData<DefaultResponse>
     fun deleteProvider(context: Context, idadmin: Int, iddata: Int, tokenAuth: String): LiveData<DefaultResponse>
+
+    fun getTitikTiang(context: Context, limit: Int, page: Int, tokenAuth: String): LiveData<TiangResponse>
 }

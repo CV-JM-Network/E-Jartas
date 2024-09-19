@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.manajemenTiang.provider.ListProviderFragment">
+    tools:context=".view.manajemenTiang.titikTiang.ListTitikTiangFragment">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/provider"
+            android:text="@string/titik_tiang"
             android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_provider"
+        android:id="@+id/rv_tiang"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
-        tools:listitem="@layout/item_provider" />
+        tools:listitem="@layout/item_tiang" />
 
     <ImageView
         android:id="@+id/empty"
@@ -73,10 +73,10 @@
         android:contentDescription="@string/icon_empty"
         android:src="@drawable/ic_empty"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_provider"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_tiang"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_provider" />
+        app:layout_constraintTop_toTopOf="@+id/rv_tiang" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -87,17 +87,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_tambah_provider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/tambah_provider"
-        app:backgroundTint="?attr/colorPrimaryContainer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

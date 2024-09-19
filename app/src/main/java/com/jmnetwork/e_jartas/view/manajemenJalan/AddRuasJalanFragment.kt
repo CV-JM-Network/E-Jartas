@@ -148,7 +148,7 @@ class AddRuasJalanFragment : Fragment(), OnMapReadyCallback {
                 val inputFungsi = spinnerFungsi.selectedItem.takeIf { it != null }?.toString().orEmpty()
 
                 val location = Location().apply {
-                    add(LocationItem(latLng?.latitude.toString(), latLng?.longitude.toString()))
+                    add(LocationItem(latLng?.latitude.toString(), latLng?.longitude.toString(), ""))
                 }
 
                 val validate = viewModel.setRequestData(

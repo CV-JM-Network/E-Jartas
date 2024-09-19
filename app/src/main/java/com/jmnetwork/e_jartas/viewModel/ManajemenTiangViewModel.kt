@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.jmnetwork.e_jartas.model.Additional
 import com.jmnetwork.e_jartas.model.ProviderData
 import com.jmnetwork.e_jartas.model.ProviderRequest
+import com.jmnetwork.e_jartas.model.TiangData
 import com.jmnetwork.e_jartas.repository.ManajemenTiangRepositoryImpl
 import com.jmnetwork.e_jartas.utils.Constants
 import com.jmnetwork.e_jartas.utils.MySharedPreferences
@@ -19,11 +20,13 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
     private val idAdmin = myPreferences.getValueInteger(Constants.USER_IDADMIN)
 
     val providerData: MutableLiveData<Map<Int, ProviderData>> = MutableLiveData(mapOf())
-    val totalData: MutableLiveData<Int> = MutableLiveData(0)
+    val tiangData: MutableLiveData<Map<Int, TiangData>> = MutableLiveData(mapOf())
+    val totalDataProvider: MutableLiveData<Int> = MutableLiveData(0)
+    val totalDataTiang: MutableLiveData<Int> = MutableLiveData(0)
 
     fun getProvider(limit: Int, page: Int) {
         repository.getProvider(appContext, limit, page, tokenAuth).observeForever {
-            totalData.postValue(it.totalData.totalData)
+            totalDataProvider.postValue(it.totalData.totalData)
             val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
             val updatedData = currentData.toMutableMap()
 
@@ -37,11 +40,27 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private var requestData: ProviderRequest = ProviderRequest(
+    fun getTitikTiang(limit: Int, page: Int) {
+        repository.getTitikTiang(appContext, limit, page, tokenAuth).observeForever {
+            totalDataTiang.postValue(it.totalData.totalTiang)
+            val currentData = tiangData.value?.toMutableMap() ?: mutableMapOf()
+            val updatedData = currentData.toMutableMap()
+
+            it.data.forEach { data ->
+                if (updatedData[data.idtiang] == null) {
+                    updatedData[data.idtiang] = data
+                }
+            }
+
+            tiangData.postValue(updatedData)
+        }
+    }
+
+    private var requestDataProvider: ProviderRequest = ProviderRequest(
         Additional(), "", ""
     )
 
-    fun setRequestData(
+    fun setRequestDataProvider(
         additional: Additional,
         alamat: String,
         provider: String
@@ -55,7 +74,7 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
             if (field.isEmpty()) return "$message tidak boleh kosong"
         }
 
-        requestData = ProviderRequest(
+        requestDataProvider = ProviderRequest(
             additional,
             alamat,
             provider
@@ -65,7 +84,7 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
     }
 
     fun addProvider(callback: (String, String) -> Unit) {
-        repository.addProvider(appContext, idAdmin, requestData, tokenAuth).observeForever {
+        repository.addProvider(appContext, idAdmin, requestDataProvider, tokenAuth).observeForever {
             callback(it.status, it.message)
         }
     }
@@ -86,15 +105,15 @@ class ManajemenTiangViewModel(application: Application) : ViewModel() {
     }
 
     fun editProvider(idProvider: Int, callback: (String, String) -> Unit) {
-        repository.editProvider(appContext, idAdmin, idProvider, requestData, tokenAuth).observeForever { it ->
+        repository.editProvider(appContext, idAdmin, idProvider, requestDataProvider, tokenAuth).observeForever { it ->
             if (it.status == "success") {
                 val currentData = providerData.value?.toMutableMap() ?: mutableMapOf()
                 val updatedData = currentData.toMutableMap()
 
                 updatedData[idProvider]?.let {
                     updatedData[idProvider] = it.copy(
-                        alamat = requestData.alamat,
-                        provider = requestData.provider
+                        alamat = requestDataProvider.alamat,
+                        provider = requestDataProvider.provider
                     )
                 }
                 providerData.postValue(updatedData)

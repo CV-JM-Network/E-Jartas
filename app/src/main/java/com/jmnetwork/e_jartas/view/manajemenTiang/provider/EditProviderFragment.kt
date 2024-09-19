@@ -84,7 +84,7 @@ class EditProviderFragment : Fragment() {
                 btnProvider.attachTextChangeAnimator()
                 btnProvider.showProgress()
 
-                val validate = viewModel.setRequestData(
+                val validate = viewModel.setRequestDataProvider(
                     additional,
                     alamatProvider,
                     namaProvider

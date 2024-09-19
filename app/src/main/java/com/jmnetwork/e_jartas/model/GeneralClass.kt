@@ -12,8 +12,9 @@ data class DefaultResponse(
 )
 
 data class LocationItem(
+    @SerializedName("alt") val alt: String,
     @SerializedName("lat") val lat: String,
-    @SerializedName("lng") val lng: String
+    @SerializedName("lng") val lng: String,
 )
 
 data class AdditionalItem(
@@ -25,5 +26,6 @@ data class AdditionalItem(
 data class TotalData(
     @SerializedName("total_data") val totalData: Int,
     @SerializedName("total_panjang_km") val totalPanjangKm: Int,
-    @SerializedName("total_panjang_meter") val totalPanjangMeter: Int
+    @SerializedName("total_panjang_meter") val totalPanjangMeter: Int,
+    @SerializedName("total_tiang_terdata") val totalTiang: Int
 )

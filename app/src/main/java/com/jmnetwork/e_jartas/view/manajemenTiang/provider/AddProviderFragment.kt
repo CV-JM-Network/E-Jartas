@@ -66,7 +66,7 @@ class AddProviderFragment : Fragment() {
                 val namaProvider = inputNamaProvider.text.toString()
                 val alamatProvider = inputAlamatProvider.text.toString()
 
-                val validate = viewModel.setRequestData(
+                val validate = viewModel.setRequestDataProvider(
                     Additional(),
                     alamatProvider,
                     namaProvider

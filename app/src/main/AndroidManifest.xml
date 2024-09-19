@@ -30,7 +30,10 @@
         android:theme="@style/Theme.Ejartas"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".view.manajemenTiang.ProviderActivity"
+            android:name=".view.manajemenTiang.titikTiang.TitikTiangActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.manajemenTiang.provider.ProviderActivity"
             android:exported="false" />
         <activity
             android:name=".view.manajemenJalan.RuasJalanActivity"

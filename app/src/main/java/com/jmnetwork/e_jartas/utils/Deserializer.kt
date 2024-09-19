@@ -5,24 +5,26 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import com.jmnetwork.e_jartas.model.Additional
-import com.jmnetwork.e_jartas.model.AdditionalItem
 import com.jmnetwork.e_jartas.model.Location
-import com.jmnetwork.e_jartas.model.LocationItem
+import com.jmnetwork.e_jartas.model.TiangProvider
 import java.lang.reflect.Type
+
+inline fun <reified T> parseJsonArray(json: JsonElement?, context: JsonDeserializationContext?, list: MutableList<T>): MutableList<T> {
+    if (json != null && json.isJsonPrimitive) {
+        val jsonString = json.asString
+        val jsonArray = JsonParser.parseString(jsonString).asJsonArray
+        jsonArray.forEach { jsonElement ->
+            val item = context?.deserialize<T>(jsonElement, T::class.java)
+            item?.let { list.add(it) }
+        }
+    }
+    return list
+}
 
 class AdditionalDeserializer : JsonDeserializer<Additional> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Additional {
         val additional = Additional()
-        // Check if json is not null and is a JSON array string
-        if (json != null && json.isJsonPrimitive) {
-            val jsonString = json.asString
-            // Parse the string-escaped JSON into a list of AdditionalItems
-            val jsonArray = JsonParser.parseString(jsonString).asJsonArray
-            jsonArray.forEach { it ->
-                val item = context?.deserialize<AdditionalItem>(it, AdditionalItem::class.java)
-                item?.let { additional.add(it) }
-            }
-        }
+        parseJsonArray(json, context, additional) // Reuse the generic function
         return additional
     }
 }
@@ -30,16 +32,15 @@ class AdditionalDeserializer : JsonDeserializer<Additional> {
 class LocationDeserializer : JsonDeserializer<Location> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Location {
         val location = Location()
-        // Check if json is not null and is a JSON array string
-        if (json != null && json.isJsonPrimitive) {
-            val jsonString = json.asString
-            // Parse the string-escaped JSON into a list of LocationItems
-            val jsonArray = JsonParser.parseString(jsonString).asJsonArray
-            jsonArray.forEach { it ->
-                val item = context?.deserialize<LocationItem>(it, LocationItem::class.java)
-                item?.let { location.add(it) }
-            }
-        }
+        parseJsonArray(json, context, location) // Reuse the generic function
         return location
+    }
+}
+
+class TiangProviderDeserializer : JsonDeserializer<TiangProvider> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): TiangProvider {
+        val tiangProvider = TiangProvider()
+        parseJsonArray(json, context, tiangProvider) // Reuse the generic function
+        return tiangProvider
     }
 }
